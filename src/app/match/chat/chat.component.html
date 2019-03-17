@@ -1,0 +1,5 @@
+<div id="chat-messages" *ngFor="let messageEvent of messageEvents">
+	<div>{{messageEvent.message}}</div>
+</div>
+<input #message (keyup.enter)="sendMessage(message.value); message.value = ''">
+<button (click)="sendMessage(message.value); message.value = ''">Send Message</button>
