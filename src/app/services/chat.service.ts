@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { IEvent } from '../interfaces/events/IEvent';
 import { WebsocketService } from './websocket.service';
-import { ChatEvent, IChatEvent } from '../interfaces/events/IChatEvent';
+import { IEvent, EventType } from '../models/event/event';
 
 @Injectable({
 	providedIn: 'root',
@@ -16,7 +15,12 @@ export class ChatService {
 	}
 
 	sendMsg(room: string, msg: any) {
-		const messageEvant: IChatEvent = new ChatEvent('123', room, 'pesho', msg)
+		const messageEvant: IEvent = {
+			room,
+			type: EventType.Message,
+			payload: { sender: 'pesho', message: msg }
+		};
+		
 		this.messages.next(messageEvant);
 	}
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
 import axios, { AxiosAdapter } from 'axios';
-import { IEvent } from '../interfaces/events/IEvent';
+import { IEvent } from '../models/event/event';
 
 @Injectable({
 	providedIn: 'root',

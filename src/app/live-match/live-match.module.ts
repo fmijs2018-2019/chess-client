@@ -1,16 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RoomsComponent } from './rooms/rooms.component';
+import { LiveMatchSceneComponent } from './live-match-scene/live-match-scene.component';
 
 @NgModule({
 	declarations: [
-		RoomsComponent
+		LiveMatchSceneComponent
 	],
 	imports: [
 		CommonModule
-	],
-	exports: [
-		RoomsComponent
 	]
 })
-export class RoomsModule { }
+export class LiveMatchModule { }

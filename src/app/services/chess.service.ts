@@ -2,9 +2,9 @@ import { Injectable, Input } from '@angular/core';
 import { ChessBoardFactory, BoardConfig } from 'chessboardjs';
 import { ChessInstance } from 'chess.js';
 import { Subject } from 'rxjs';
-import { IEvent } from '../interfaces/events/IEvent';
 import { WebsocketService } from './websocket.service';
-import { MoveEvent } from '../interfaces/events/IMoveEvent';
+import { IEvent, EventType } from '../models/event/event';
+
 declare const Chess: {
     /**
      * The Chess() constructor takes an optional parameter which specifies
@@ -31,10 +31,7 @@ export class ChessService {
 	game: ChessInstance;
 	board: any;
 	room: string;
-	statusEl = $('#status');
-	fenEl = $('#fen');
-	pgnEl = $('#pgn');
-	
+
 
 	constructor(private wsSevice: WebsocketService) {
 		this.events = wsSevice.connect();
@@ -64,27 +61,23 @@ export class ChessService {
 		}
 
 		// checkmate?
-		if (this.game.in_checkmate() === true) {
+		if (this.game.in_checkmate()) {
 			status = 'Game over, ' + moveColor + ' is in checkmate.';
-		} else if (this.game.in_draw() === true) { // draw?
+		} else if (this.game.in_draw()) { // draw?
 			status = 'Game over, drawn position';
 		} else { // game still on
 			status = moveColor + ' to move';
 
 			// check?
-			if (this.game.in_check() === true) {
+			if (this.game.in_check()) {
 				status += ', ' + moveColor + ' is in check';
 			}
 		}
-
-		this.statusEl.html(status);
-		this.fenEl.html(this.game.fen());
-		this.pgnEl.html(this.game.pgn());
 	};
 	// do not pick up pieces if the game is over
 	// only pick up pieces for the side to move
 	onDragStart = (source, piece, position, orientation) => {
-		if (this.game.game_over() === true ||
+		if (!this.game.game_over() ||
 			(this.game.turn() === 'w' && piece.search(/^b/) !== -1) ||
 			(this.game.turn() === 'b' && piece.search(/^w/) !== -1)) {
 			return false;
@@ -100,9 +93,13 @@ export class ChessService {
 		});
 
 		// illegal move
-		if (move === null) { return 'snapback'; }
+		if (!move) { return 'snapback'; }
 
-		const moveEvent = new MoveEvent('1', this.room, move);
+		const moveEvent: IEvent = {
+			room: this.room,
+			type: EventType.Move,
+			payload: move
+		};
 		this.events.next(moveEvent);
 		this.updateStatus();
 	};

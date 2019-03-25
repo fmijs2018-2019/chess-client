@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as auth0 from 'auth0-js';
-import { routes } from 'src/routes';
+import { routesConstants } from 'src/routes';
 import { environment } from 'src/environments/environment';
-import { reject } from 'q';
 
 @Injectable({
 	providedIn: 'root'
@@ -19,7 +18,7 @@ export class AuthService {
 			domain: environment.auth0IdentityUrl,
 			clientID: environment.auth0ClientId,
 			responseType: 'token id_token',
-			redirectUri: environment.url + ':' + environment.port + '/' + routes.callback,
+			redirectUri: environment.url + ':' + environment.port + '/' + routesConstants.callback,
 			scope: 'openid profile email'
 		};
 
@@ -78,7 +77,6 @@ export class AuthService {
 	public silentAuth(): Promise<auth0.Auth0DecodedHash> {
 		return new Promise((resolve, reject) => {
 			this._auth0.checkSession({}, (err, authResult) => {
-				debugger;
 				if (err) {
 					return reject(err);
 				}

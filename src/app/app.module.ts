@@ -4,11 +4,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
-import { MatchModule } from './match/match.module';
-import { RoomsModule } from './rooms/rooms.module';
-import { CallbackComponent } from './callback/callback/callback.component';
 import { CallbackModule } from './callback/callback.module';
 import { AuthGuard } from './services/auth-guard.service';
+import { LiveMatchModule } from './live-match/live-match.module';
+import { LiveMatchesListModule } from './live-matches/live-matches-list.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
 	declarations: [
@@ -16,14 +16,16 @@ import { AuthGuard } from './services/auth-guard.service';
 	],
 	imports: [
 		BrowserModule,
+		HttpClientModule,
 		AppRoutingModule,
-		MatchModule,
 		SharedModule,
-		RoomsModule,
-		CallbackModule
+		LiveMatchesListModule,
+		CallbackModule,
+		HomeModule,
+		LiveMatchModule
 	],
 	providers: [
-		AuthGuard
+		AuthGuard,
 	],
 	bootstrap: [AppComponent]
 })
