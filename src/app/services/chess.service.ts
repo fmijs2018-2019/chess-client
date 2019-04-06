@@ -1,9 +1,11 @@
 import { Injectable, Input } from '@angular/core';
 import { ChessBoardFactory, BoardConfig } from 'chessboardjs';
-import { ChessInstance } from 'chess.js';
-import { Subject } from 'rxjs';
+import { ChessInstance, ShortMove } from 'chess.js';
 import { WebsocketService } from './websocket.service';
-import { IEvent, EventType } from '../models/event/event';
+import { IMoveEvent } from '../models/events/move';
+import { AuthService } from './auth.service';
+import { EventType } from '../models/events/eventTypes';
+import { Subscription } from 'rxjs';
 
 declare const Chess: {
     /**
@@ -27,29 +29,43 @@ declare const $: any;
 	providedIn: 'root'
 })
 export class ChessService {
-	events: Subject<IEvent>;
 	game: ChessInstance;
 	board: any;
 	room: string;
+	orientation: string;
+	moves: IMoveEvent[] = [];
+	subscription: Subscription
 
+	constructor(private wsSevice: WebsocketService, private authService: AuthService) {
+		this.subscription = wsSevice.events.subscribe(e => {
+			if(e.type === EventType.move) {
+				this.moves.push(e as IMoveEvent);
 
-	constructor(private wsSevice: WebsocketService) {
-		this.events = wsSevice.connect();
+				const shortMove = (e as IMoveEvent).shortMove;
+
+				const move = `${shortMove.from}-${shortMove.to}`;
+				// const newPos = this.board.move(move);
+				this.board.position(this.board.move(move));
+				this.game.move(shortMove);
+			}
+		});
 	}
 
-	init = (elementId: string, room: string) => {
+	init = (elementId: string, room: string, orientation: string, fen: string = 'start') => {
 		this.room = room;
-		this.game = Chess();
+		this.orientation = orientation;
+		this.game = Chess(fen);
 		const cfg = {
 			draggable: true,
-			position: 'start',
+			position: fen,
+			orientation,
 			onDragStart: this.onDragStart,
 			onDrop: this.onDrop,
 			onSnapEnd: this.onSnapEnd
 		};
 		this.board = ChessBoard(elementId, cfg);
 
-		this.updateStatus();
+		// this.updateStatus();
 	}
 
 	updateStatus = () => {
@@ -77,30 +93,30 @@ export class ChessService {
 	// do not pick up pieces if the game is over
 	// only pick up pieces for the side to move
 	onDragStart = (source, piece, position, orientation) => {
-		if (!this.game.game_over() ||
-			(this.game.turn() === 'w' && piece.search(/^b/) !== -1) ||
-			(this.game.turn() === 'b' && piece.search(/^w/) !== -1)) {
-			return false;
-		}
+		const turn = this.game.turn();
+		return !this.game.game_over() && turn === orientation[0] && turn === piece[0];
 	};
 
 	onDrop = (source, target) => {
-		// see if the move is legal
-		const move = this.game.move({
+		const shortMove: ShortMove = {
 			from: source,
 			to: target,
-			promotion: 'q' // NOTE: always promote to a queen for example simplicity
-		});
+			promotion: 'q'
+		}
+		// see if the move is legal
+		const move = this.game.move(shortMove);
 
 		// illegal move
 		if (!move) { return 'snapback'; }
 
-		const moveEvent: IEvent = {
+		const moveEvent: IMoveEvent = {
+			type: EventType.move,
 			room: this.room,
-			type: EventType.Move,
-			payload: move
+			sender: this.authService.profilePaylaod.sub,
+			shortMove,
+			fen: this.game.fen()
 		};
-		this.events.next(moveEvent);
+		this.wsSevice.events.next(moveEvent);
 		this.updateStatus();
 	};
 

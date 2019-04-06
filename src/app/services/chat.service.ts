@@ -1,26 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { WebsocketService } from './websocket.service';
-import { IEvent, EventType } from '../models/event/event';
+import { IMessageEvent } from '../models/events/message';
+import { IEventBase } from '../models/events/eventBase';
+import { AuthService } from './auth.service';
+import { EventType } from '../models/events/eventTypes';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class ChatService {
-	messages: Subject<IEvent>;
+	messages: Subject<IMessageEvent>;
 
-	constructor(private wsService: WebsocketService) {
-		this.messages = wsService
-			.connect();
+	constructor(private wsService: WebsocketService, private authService: AuthService) {
 	}
 
 	sendMsg(room: string, msg: any) {
-		const messageEvant: IEvent = {
+		const messageEvant: IMessageEvent = {
 			room,
-			type: EventType.Message,
-			payload: { sender: 'pesho', message: msg }
+			sender: this.authService.profilePaylaod.sub,
+			message: msg,
+			type: EventType.message
 		};
-		
+
 		this.messages.next(messageEvant);
 	}
 

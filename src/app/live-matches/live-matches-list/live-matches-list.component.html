@@ -1,0 +1,20 @@
+<div *ngIf="matches">
+	<table class="table">
+		<thead>
+			<tr>
+				Live Matches
+				<button (click)="getLiveMatches()">Refresh</button>
+			</tr>
+		</thead>
+		<tbody *ngFor="let matchId of matches | objKeys">
+			<tr>
+				<td>{{matchId}}</td>
+				<td *ngIf="!matches[matchId].match.blackP">Black</td>
+				<td *ngIf="!matches[matchId].match.whiteP">White</td>
+				<td>
+					<button type="button" class="btn btn-info" (click)="onJoinClick(matchId)">Join</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

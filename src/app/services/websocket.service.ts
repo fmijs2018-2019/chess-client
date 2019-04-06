@@ -1,30 +1,38 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
-import axios, { AxiosAdapter } from 'axios';
-import { IEvent } from '../models/event/event';
+import { environment } from 'src/environments/environment';
+import { IEventBase } from '../models/events/eventBase';
+import { EventType } from '../models/events/eventTypes';
+import { IMessageEvent } from '../models/events/message';
+import { IMoveEvent } from '../models/events/move';
+import { IJoinEvent } from '../models/events/join';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class WebsocketService {
 	private socket: SocketIOClient.Socket;
-	connected: boolean = false;
+	private apiBaseUrl = `${environment.apiUrl}:${environment.apiPort}`;
+	events: Subject<IEventBase>;
 
-	constructor() { }
-
-	connect(): Subject<IEvent> {
-		if (!this.connected) {
-			this.socket = io('http://localhost:8080');
-			this.connected = true;
-		}
+	constructor() {
+		this.socket = io(this.apiBaseUrl);
 
 		const observable = new Observable(ob => {
-
-			this.socket.on('event', (event: IEvent) => {
-				console.log('Received event from Websocket Server');
+			this.socket.on('message', (event: IMessageEvent) => {
+				console.log(event.message);
 				ob.next(event);
 			});
+
+			this.socket.on('move', (event: IMoveEvent) => {
+				ob.next(event);
+			});
+
+			this.socket.on('joinMatch', (event: IJoinEvent) => {
+				console.log(event.sender + ' joined');
+				ob.next(event);
+			})
 
 			return () => {
 				this.socket.disconnect();
@@ -32,16 +40,11 @@ export class WebsocketService {
 		});
 
 		const observer = {
-			next: (event: IEvent) => {
-				this.socket.emit('event', event);
+			next: (event: IEventBase) => {
+				this.socket.emit(event.type, event);
 			},
 		};
 
-		return Subject.create(observer, observable);
-	}
-
-	joinMatch = (match: string) => {
-		const config = { params: { match: match } }
-		axios.get('/match/join', config);
+		this.events = Subject.create(observer, observable);
 	}
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as auth0 from 'auth0-js';
 import { routesConstants } from 'src/routes';
 import { environment } from 'src/environments/environment';
+import { IProfilePayload } from '../models/auth/IProfilePayload';
 
 @Injectable({
 	providedIn: 'root'
@@ -10,7 +11,7 @@ export class AuthService {
 	private _idToken?: string;
 	private _accessToken?: string;
 	private _expiresAt?: number;
-	private _idTokenPayload?: any;
+	private _idTokenPayload?: IProfilePayload;
 	private _auth0?: auth0.WebAuth;
 
 	constructor() {
@@ -29,6 +30,18 @@ export class AuthService {
 		this.logout = this.logout.bind(this);
 		this.setAuthResult = this.setAuthResult.bind(this);
 		this.silentAuth = this.silentAuth.bind(this);
+	}
+
+	get profilePaylaod(): IProfilePayload {
+		return this._idTokenPayload;
+	}
+
+	get accessToken(): string {
+		return this._accessToken;
+	}
+
+	get idToken(): string {
+		return this._idToken;
 	}
 
 	public login(authOptions?: auth0.AuthorizeOptions): void {
@@ -56,7 +69,6 @@ export class AuthService {
 		this._idToken = authResult.idToken;
 		this._expiresAt = expiresAt;
 		this._idTokenPayload = authResult.idTokenPayload;
-		console.log(new Date(expiresAt));
 	}
 
 	public logout(): void {

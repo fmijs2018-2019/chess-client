@@ -8,8 +8,8 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<label class="radio-inline"><input type="radio" name="optradio" checked>White</label>
-				<label class="radio-inline"><input type="radio" name="optradio">Black</label>
+				<label class="radio-inline"><input type="radio" name="optradio" value="white" [(ngModel)]="orientation" checked>White</label>
+				<label class="radio-inline"><input type="radio" name="optradio" value="black" [(ngModel)]="orientation">Black</label>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" (click)="onClick()" data-dismiss="modal">Save changes</button>

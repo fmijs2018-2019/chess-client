@@ -1,8 +1,8 @@
 export interface IMatchCreateDto {
-	piecesColor: PiecesColor,
+	orientation: 'white' | 'black',
 }
 
-export enum PiecesColor {
-	White = 0,
-	Black = 1
+export const PiecesColor = {
+	white: 'white',
+	black: 'black'
 }
