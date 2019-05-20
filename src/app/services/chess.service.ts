@@ -42,10 +42,9 @@ export class ChessService {
 				this.moves.push(e as IMoveEvent);
 
 				const shortMove = (e as IMoveEvent).shortMove;
+				const moveStr = `${shortMove.from}-${shortMove.to}`;
 
-				const move = `${shortMove.from}-${shortMove.to}`;
-				// const newPos = this.board.move(move);
-				this.board.position(this.board.move(move));
+				this.board.position(this.board.move(moveStr));
 				this.game.move(shortMove);
 			}
 		});
@@ -117,7 +116,7 @@ export class ChessService {
 			fen: this.game.fen()
 		};
 		this.wsSevice.events.next(moveEvent);
-		this.updateStatus();
+		// this.updateStatus();
 	};
 
 	// update the board position after the piece snap

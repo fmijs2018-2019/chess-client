@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LayoutComponent } from './layout/layout.component';
 import { ObjKeysPipe } from './obj-keys.pipe';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
 	declarations: [
@@ -9,11 +10,12 @@ import { ObjKeysPipe } from './obj-keys.pipe';
 		ObjKeysPipe,
 	],
 	imports: [
-		CommonModule
+		CommonModule,
+		FontAwesomeModule
 	],
 	exports: [
 		LayoutComponent,
-		ObjKeysPipe
+		ObjKeysPipe,
 	]
 })
 export class SharedModule { }
