@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as auth0 from 'auth0-js';
 import { routesConstants } from 'src/routes';
 import { environment } from 'src/environments/environment';
-import { IProfilePayload } from '../models/auth/IProfilePayload';
+import { IProfilePayload } from '../../models/auth/IProfilePayload';
 
 @Injectable({
 	providedIn: 'root'

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
+import { faChess } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
 	selector: 'app-layout',
@@ -8,9 +9,20 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LayoutComponent implements OnInit {
 
-	constructor(private auth: AuthService) { }
+	faChess = faChess;
+	dropdown: string;
+
+	constructor(public auth: AuthService) { }
 
 	ngOnInit() {
+	}
+
+	openDropdown() {
+		if(this.dropdown) {
+			this.dropdown = undefined;
+		} else {
+			this.dropdown = 'show';
+		}
 	}
 
 }

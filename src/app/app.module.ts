@@ -5,10 +5,10 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
 import { CallbackModule } from './callback/callback.module';
-import { AuthGuard } from './services/auth-guard.service';
-import { LiveMatchModule } from './live-match/live-match.module';
-import { LiveMatchesListModule } from './live-matches/live-matches-list.module';
 import { HttpClientModule } from '@angular/common/http';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { CoreModule } from './core/core.module';
+import { LobbySceneModule } from './lobby-scene/lobby-scene.module';
 
 @NgModule({
 	declarations: [
@@ -19,13 +19,13 @@ import { HttpClientModule } from '@angular/common/http';
 		HttpClientModule,
 		AppRoutingModule,
 		SharedModule,
-		LiveMatchesListModule,
 		CallbackModule,
 		HomeModule,
-		LiveMatchModule
+		CoreModule,
+		LobbySceneModule,
+		BsDropdownModule.forRoot()
 	],
 	providers: [
-		AuthGuard,
 	],
 	bootstrap: [AppComponent]
 })

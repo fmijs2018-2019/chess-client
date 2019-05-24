@@ -1,0 +1,12 @@
+div.header {
+	font-size: 1.2em;
+	align-items: center;
+}
+
+.pieces-cell {
+	align-items: center;
+}
+
+.list-container {
+	text-align: center;
+}

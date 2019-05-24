@@ -1,0 +1,26 @@
+fa-icon {
+	margin: 5px;
+	color: grey;
+}
+
+div.row {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border: solid 1px;
+	border-radius: 20px;
+	align-items: center;
+}
+
+.pieces-cell {
+	border-radius: 20px;
+}
+
+div.my-challenge {
+	border: solid 2px;
+}
+
+button {
+	border: none;
+	background-color: transparent;
+	padding: 0;
+}

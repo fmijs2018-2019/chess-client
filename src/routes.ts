@@ -1,5 +1,5 @@
 export const routesConstants = {
 	callback: 'callback',
-	liveMatches: 'livematches',
-	
+	lobby: 'lobby',
+	games: 'games'
 }

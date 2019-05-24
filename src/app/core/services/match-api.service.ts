@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { IMatchCreateDto } from '../models/match/matchCreateDto';
-import { IApiResult } from '../models/api/apiResult';
+import { IMatchCreateDto } from '../../models/match/matchCreateDto';
 import { environment } from 'src/environments/environment';
-import { IMatchItem } from '../models/match/matchItem';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -17,14 +15,14 @@ export class MatchApiService {
 	}
 
 	createMatch = (match: IMatchCreateDto) => {
-		return this.httpClient.post<IApiResult<any>>(this.baseUrl + '/create', match, { headers: this.headers });
+		// return this.httpClient.post<IApiResult<any>>(this.baseUrl + '/create', match, { headers: this.headers });
 	};
 
 	joinMatch = (matchId: string) => {
-		return this.httpClient.post<IApiResult<any>>(`${this.baseUrl}/${matchId}/join`, {}, { headers: this.headers });
+		// return this.httpClient.post<IApiResult<any>>(`${this.baseUrl}/${matchId}/join`, {}, { headers: this.headers });
 	};
 
 	getAllMatches = () => {
-		return this.httpClient.get<IApiResult<any>>(this.baseUrl, { headers: this.headers });
+		// return this.httpClient.get<IApiResult<any>>(this.baseUrl, { headers: this.headers });
 	}
 }
