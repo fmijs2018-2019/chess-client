@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IChallenge } from 'src/app/models/IChallenge';
 import { LobbyWebSocketService, LobbyEvents } from '../../core/services/lobby-web-socket.service';
-import { Subject, Observable, Subscription } from 'rxjs';
 import { ILobbyEvent } from 'src/app/models/events/ILobbyEvent';
 import { AuthService } from 'src/app/core/services/auth.service';
 
@@ -13,41 +12,35 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class LobbySceneComponent implements OnInit, OnDestroy {
 
 	challenges: IChallenge[];
-	subject: Subject<any>;
-	subscriptions: Subscription[] = [];
-	myChallenge;
+	myChallenge: IChallenge;
 
 	constructor(private lobbyWebSocketService: LobbyWebSocketService,
-		private authService: AuthService,
-		private changeDetector: ChangeDetectorRef) { }
+		private authService: AuthService) { }
 
 	ngOnInit() {
 		this.lobbyWebSocketService.connect()
 		this.challenges = this.lobbyWebSocketService.getChallenges();
-		// this.subject = this.lobbyWebSocketService.connect();
-		// this.subscriptions.push(this.subject.subscribe(challenges => {
-		// 	console.debug('pesho', challenges);
-		// 	this.challenges = Object.assign([], challenges);
-		// 	this.changeDetector.detectChanges();
-		// }));
 	}
 
 	createChallenge() {
-		this.myChallenge = {
-			userId: this.authService.profilePaylaod.sub,
-			pieces: 'black',
-		};
 
 		const lobbyEvent: ILobbyEvent = {
 			type: LobbyEvents.createChallenge,
-			payload: this.myChallenge
+			payload: {
+				userId: this.authService.profilePaylaod.sub,
+				pieces: 'black',
+			}
 		}
-		this.lobbyWebSocketService.emitEvent(lobbyEvent);
+		this.lobbyWebSocketService.emitEvent(lobbyEvent, (ch: IChallenge) => this.myChallenge = ch);
 	}
 
 	clickRow(id: string) {
 		console.log('scene', id);
 		const isMyChallenge = this.myChallenge && this.myChallenge.id === id;
+
+		if(isMyChallenge) {
+			this.myChallenge = undefined;
+		}
 
 		const lobbyEvent: ILobbyEvent = {
 			type: isMyChallenge ? LobbyEvents.removeChallenge : LobbyEvents.approveChallenge,
@@ -58,10 +51,5 @@ export class LobbySceneComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
-		// this.subscriptions.forEach(s => {
-		// 	if (s) {
-		// 		s.unsubscribe();
-		// 	}
-		// })
 	}
 }
