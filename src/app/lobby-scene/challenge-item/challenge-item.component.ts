@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IChallenge } from 'src/app/models/IChallenge';
 import { IconDefinition, faChess } from '@fortawesome/free-solid-svg-icons';
 
@@ -18,6 +18,9 @@ export class ChallengeItemComponent implements OnInit {
 	@Input()
 	icon: IconDefinition;
 
+	@Output()
+	onRowClick = new EventEmitter<string>();
+
 	@Input()
 	color: string;
 
@@ -28,4 +31,8 @@ export class ChallengeItemComponent implements OnInit {
 	ngOnInit() {
 	}
 
+	clickRow() {
+		console.log('click', this.challenge);
+		this.onRowClick.emit(this.challenge.id);
+	}
 }

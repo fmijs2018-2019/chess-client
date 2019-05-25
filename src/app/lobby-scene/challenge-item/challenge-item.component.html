@@ -1,4 +1,4 @@
-<div class="row" [ngClass]="{'my-challenge': isMyChallenge}" [ngStyle]="{'border-color': color}">
+<div (click)="clickRow()" class="row" [ngClass]="{'my-challenge': isMyChallenge}" [ngStyle]="{'border-color': color}">
 	<div class="pieces-cell col-3" [ngStyle]="{'background-color': color}">
 		<fa-icon [ngStyle]="{'color': challenge.pieces }" [icon]="faChess" size="2x"></fa-icon>
 	</div>

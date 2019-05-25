@@ -3,10 +3,10 @@
 </div>
 <div class="container">
 	<div>
-		<app-challenges-list [challenges]="challenges"></app-challenges-list>
+		<app-challenges-list (onRowClick)="clickRow($event)" [myChallenge]="myChallenge" [challenges]="challenges"></app-challenges-list>
 	</div>
 
 	<div class="row">
-		<button class="btn btn-primary" (click)="createChallenge()">New Challenge</button>
+		<button [disabled]="myChallenge" class="btn btn-primary" (click)="createChallenge()">New Challenge</button>
 	</div>
 </div>

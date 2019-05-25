@@ -5,6 +5,6 @@
 		<div class="time-cell col-3">Time</div>
 		<div class="join-delete-icon col-3">Actions</div>
 	</div>
-	<app-challenge-item *ngIf="myChallenge" color="#2a7aec" [challenge]="myChallenge" isMyChallenge=true [icon]="faTimes"></app-challenge-item>
-	<app-challenge-item *ngFor="let challenge of challenges" color="#b3d7ff" [challenge]="challenge" [icon]="faSignInAlt"></app-challenge-item>
+	<app-challenge-item (onRowClick)="clickRow($event)" *ngIf="myChallenge" color="#2a7aec" [challenge]="myChallenge" isMyChallenge=true [icon]="faTimes"></app-challenge-item>
+	<app-challenge-item (onRowClick)="clickRow($event)" *ngFor="let challenge of challenges" color="#b3d7ff" [challenge]="challenge" [icon]="faSignInAlt"></app-challenge-item>
 </div>

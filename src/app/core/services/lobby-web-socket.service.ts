@@ -45,8 +45,8 @@ export class LobbyWebSocketService {
 		return this.challenges;
 	}
 
-	emitEvent = (event: ILobbyEvent) => {
-		this.socket.emit(event.type, event.payload);
+	emitEvent = (event: ILobbyEvent, callback?: any) => {
+		this.socket.emit(event.type, event.payload, callback);
 	}
 
 	connect = () => {

@@ -15,6 +15,7 @@ export class LobbySceneComponent implements OnInit, OnDestroy {
 	challenges: IChallenge[];
 	subject: Subject<any>;
 	subscriptions: Subscription[] = [];
+	myChallenge;
 
 	constructor(private lobbyWebSocketService: LobbyWebSocketService,
 		private authService: AuthService,
@@ -32,13 +33,27 @@ export class LobbySceneComponent implements OnInit, OnDestroy {
 	}
 
 	createChallenge() {
+		this.myChallenge = {
+			userId: this.authService.profilePaylaod.sub,
+			pieces: 'black',
+		};
+
 		const lobbyEvent: ILobbyEvent = {
 			type: LobbyEvents.createChallenge,
-			payload: {
-				userId: this.authService.profilePaylaod.sub,
-				pieces: 'black',
-			}
+			payload: this.myChallenge
 		}
+		this.lobbyWebSocketService.emitEvent(lobbyEvent);
+	}
+
+	clickRow(id: string) {
+		console.log('scene', id);
+		const isMyChallenge = this.myChallenge && this.myChallenge.id === id;
+
+		const lobbyEvent: ILobbyEvent = {
+			type: isMyChallenge ? LobbyEvents.removeChallenge : LobbyEvents.approveChallenge,
+			payload: id
+		}
+
 		this.lobbyWebSocketService.emitEvent(lobbyEvent);
 	}
 
