@@ -4,6 +4,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { AuthService } from './services/auth.service';
 import { MatchApiService } from './services/match-api.service';
 import { LobbyWebSocketService } from './services/lobby-web-socket.service';
+import { GameWebSocketService } from './services/game-web-socket.service.';
 
 @NgModule({
 	declarations: [],
@@ -14,7 +15,8 @@ import { LobbyWebSocketService } from './services/lobby-web-socket.service';
 		AuthGuard,
 		AuthService,
 		MatchApiService,
-		LobbyWebSocketService
+		LobbyWebSocketService,
+		GameWebSocketService
 	]
 })
 export class CoreModule { }

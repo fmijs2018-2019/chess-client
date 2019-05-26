@@ -9,7 +9,7 @@
 	</button>
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
-		<ul class="navbar-nav mr-auto">
+		<ul class="nav navbar-nav mr-auto">
 			<li class="nav-item">
 				<a class="nav-link" routerLink="/">Home</a>
 			</li>
@@ -17,32 +17,35 @@
 				<a class="nav-link" routerLink="/lobby">Lobby</a>
 			</li>
 		</ul>
+		<ul class="nav navbar-nav pull-right" *ngIf="!auth.isAuthenticated(); else loggedUser">
+			<li class="nav-item">
+				<a class="nav-link navbar-nav" (click)="auth.login()">Log In</a>
+			</li>
+		</ul>
 
-		<a class="nav-item" *ngIf="!auth.isAuthenticated(); else loggedUser" (click)="auth.login()">
-			Log In
-		</a>
-
-		<ng-template #loggedUser>
-			<span dropdown>
-				<a dropdown-toggle (click)="openDropdown()" id="navbarDropdown" role="button" data-toggle="dropdown"
-					aria-haspopup="true" aria-expanded="false">
-					Profile
-				</a>
-				<ul class="dropdown-menu dropdown-menu-right" [ngClass]="dropdown" aria-labelledby="navbarDropdown"
-					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<li class="menuitem">
-						<a class="dropdown-item nav-link">See Profile</a>
-					</li>
-					<li class="menuitem">
-						<a class="dropdown-item nav-link">Matches History</a>
-					</li>
-					<li class="divider dropdown-divider"></li>
-					<li class="menuitem">
-						<a class="dropdown-item nav-link" *ngIf="auth.isAuthenticated()" (click)="auth.logout()">Log
-							Out</a>
-					</li>
-				</ul>
-			</span>
+		<ng-template #loggedUser dropdown>
+			<ul class="nav navbar-nav pull-right">
+				<li class="nav-item">
+					<a class="nav-link" dropdown-toggle (click)="openDropdown()" id="navbarDropdown" role="button"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Profile
+					</a>
+					<ul class="dropdown-menu dropdown-menu-right" [ngClass]="dropdown" aria-labelledby="navbarDropdown"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<li class="menuitem">
+							<a class="dropdown-item nav-link">See Profile</a>
+						</li>
+						<li class="menuitem">
+							<a class="dropdown-item nav-link">Matches History</a>
+						</li>
+						<li class="divider dropdown-divider"></li>
+						<li class="menuitem">
+							<a class="dropdown-item nav-link" *ngIf="auth.isAuthenticated()" (click)="auth.logout()">Log
+								Out</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
 		</ng-template>
 
 	</div>

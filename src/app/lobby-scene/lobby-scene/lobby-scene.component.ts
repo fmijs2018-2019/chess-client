@@ -38,13 +38,13 @@ export class LobbySceneComponent implements OnInit, OnDestroy {
 		console.log('scene', id);
 		const isMyChallenge = this.myChallenge && this.myChallenge.id === id;
 
-		if(isMyChallenge) {
+		if (isMyChallenge) {
 			this.myChallenge = undefined;
 		}
 
 		const lobbyEvent: ILobbyEvent = {
 			type: isMyChallenge ? LobbyEvents.removeChallenge : LobbyEvents.approveChallenge,
-			payload: id
+			payload: { challengeId: id, userId: this.authService.profilePaylaod.sub }
 		}
 
 		this.lobbyWebSocketService.emitEvent(lobbyEvent);

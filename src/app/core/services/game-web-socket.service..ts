@@ -11,7 +11,6 @@ import { IGameEvent } from 'src/app/models/events/IGameEvent';
 
 export enum GameEvents {
 	joinGame = 'joinGame',
-	onGameJoin = 'onGameJoin'
 }
 
 @Injectable()
@@ -23,8 +22,6 @@ export class GameWebSocketService {
 
 	constructor(private router: Router, private authService: AuthService) { }
 
-	
-
 	emitEvent = (event: IGameEvent, callback?: any) => {
 		this.socket.emit(event.type, event.payload, callback);
 	}
@@ -32,8 +29,5 @@ export class GameWebSocketService {
 	connect = () => {
 		this.socket = io(this.apiBaseUrl + '/game');
 
-		this.socket.on(GameEvents.onGameJoin, (match: any) => {
-			
-		});
 	}
 }

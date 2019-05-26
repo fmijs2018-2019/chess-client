@@ -25,7 +25,6 @@ declare const $: any;
 
 export interface IBoardInitOptions {
 	elementId: string,
-	room: string,
 	orientation: string,
 	onDrop?: any,
 	fen?: string
@@ -35,11 +34,10 @@ export interface IBoardInitOptions {
 	providedIn: 'root'
 })
 export class ChessService {
-	game: ChessInstance;
-	board: any;
-	room: string;
-	orientation: string;
-	options: IBoardInitOptions;
+	private game: ChessInstance;
+	private board: any;
+	private orientation: string;
+	private options: IBoardInitOptions;
 
 	constructor() {
 	}
@@ -47,18 +45,17 @@ export class ChessService {
 	init = (options: IBoardInitOptions) => {
 		this.options = options;
 		this.orientation = options.orientation;
-		this.game = Chess(options.fen || 'start');
+		this.game = new Chess(options.fen);
 		const cfg = {
 			draggable: true,
 			position: options.fen || 'start',
-			orientation,
+			orientation: options.orientation,
 			onDragStart: this.onDragStart,
 			onDrop: this.onDrop,
 			onSnapEnd: this.onSnapEnd
 		};
 		this.board = ChessBoard(options.elementId, cfg);
-
-
+		return this.board;
 	}
 
 	move = (source: string, target: string) => {
