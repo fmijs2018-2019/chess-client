@@ -25,22 +25,22 @@
 
 		<ng-template #loggedUser dropdown>
 			<ul class="nav navbar-nav pull-right">
-				<li class="nav-item">
-					<a class="nav-link" dropdown-toggle (click)="openDropdown()" id="navbarDropdown" role="button"
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" dropdown-toggle (click)="openDropdown()" id="navbarDropdown" role="button"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						Profile
 					</a>
 					<ul class="dropdown-menu dropdown-menu-right" [ngClass]="dropdown" aria-labelledby="navbarDropdown"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<li class="menuitem">
-							<a class="dropdown-item nav-link">See Profile</a>
+							<a class="dropdown-item nav-link" style="color: black;">See Profile</a>
 						</li>
 						<li class="menuitem">
-							<a class="dropdown-item nav-link">Matches History</a>
+							<a class="dropdown-item nav-link" style="color: black;">Matches History</a>
 						</li>
 						<li class="divider dropdown-divider"></li>
 						<li class="menuitem">
-							<a class="dropdown-item nav-link" *ngIf="auth.isAuthenticated()" (click)="auth.logout()">Log
+							<a class="dropdown-item nav-link" style="color: black;" *ngIf="auth.isAuthenticated()" (click)="auth.logout()">Log
 								Out</a>
 						</li>
 					</ul>
