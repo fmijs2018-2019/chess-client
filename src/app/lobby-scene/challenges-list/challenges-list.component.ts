@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IChallenge } from 'src/app/models/IChallenge';
-import { faTimes, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faSignInAlt, faChess } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
 	selector: 'app-challenges-list',
@@ -18,6 +18,7 @@ export class ChallengesListComponent implements OnInit {
 	// icons
 	faTimes = faTimes;
 	faSignInAlt = faSignInAlt;
+	faChess = faChess;
 	
 	constructor() { }
 	
@@ -28,7 +29,6 @@ export class ChallengesListComponent implements OnInit {
 	onRowClick = new EventEmitter<string>();
 
 	clickRow(id: string) {
-		console.log('list', id)
 		this.onRowClick.emit(id);
 	}
 }

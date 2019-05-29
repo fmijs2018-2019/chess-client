@@ -1,10 +1,49 @@
 <div class="list-container">
-	<div class="row header">
-		<div class="pieces-cell col-3">Opponent</div>
-		<div class="type-cell col-3">Game variation</div>
-		<div class="time-cell col-3">Time</div>
-		<div class="join-delete-icon col-3">Actions</div>
-	</div>
-	<app-challenge-item (onRowClick)="clickRow($event)" *ngIf="myChallenge" color="#2a7aec" [challenge]="myChallenge" isMyChallenge=true [icon]="faTimes"></app-challenge-item>
-	<app-challenge-item (onRowClick)="clickRow($event)" *ngFor="let challenge of challenges" color="#b3d7ff" [challenge]="challenge" [icon]="faSignInAlt"></app-challenge-item>
+	<table class="fixed-header">
+		<thead>
+			<tr class="header">
+				<th>Orientation</th>
+				<th>Opponent</th>
+				<th>Game variation</th>
+				<th>Time</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="my-challenge" *ngIf="myChallenge" (onRowClick)="clickRow($event)">
+				<td>
+					<img *ngIf="myChallenge.pieces === 'white'" src="assets/img/white.png" alt="image">
+					<img *ngIf="myChallenge.pieces === 'black'" src="assets/img/black.png" alt="image">
+				</td>
+				<td>Anonymous</td>
+				<td>Standart</td>
+				<td *ngIf="myChallenge.time; else noTimeSet">{{myChallenge.time}}</td>
+				<ng-template #noTimeSet>
+					<td>-</td>
+				</ng-template>
+				<td>
+					<button>
+						<fa-icon [icon]="faTimes" size="lg"></fa-icon>
+					</button>
+				</td>
+			</tr>
+			<tr *ngFor="let challenge of challenges" (onRowClick)="clickRow($event)">
+				<td>
+						<img *ngIf="challenge.pieces === 'white'" src="assets/img/white.png" alt="image">
+						<img *ngIf="challenge.pieces === 'black'" src="assets/img/black.png" alt="image">
+				</td>
+				<td>Anonymous</td>
+				<td>Standart</td>
+				<td *ngIf="challenge.time; else noTimeSet">{{challenge.time}}</td>
+				<ng-template #noTimeSet>
+					<td>-</td>
+				</ng-template>
+				<td>
+					<button>
+						<fa-icon [icon]="faSignInAlt" size="lg"></fa-icon>
+					</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 </div>

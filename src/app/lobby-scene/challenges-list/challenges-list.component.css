@@ -1,12 +1,81 @@
-div.header {
-	font-size: 1.2em;
-	align-items: center;
-}
-
-.pieces-cell {
-	align-items: center;
-}
-
 .list-container {
+	-webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+	box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+	height: 400px;
+	margin-top: 15px;
+	overflow-y: auto
+}
+
+.list-container th { 
+	position: sticky;
+	 top: 0;
+}
+
+table {
+	width: 100.1%;
 	text-align: center;
+}
+
+.header th {
+	padding: 10px 0;
+	background: white;
+}
+
+
+tr:hover:not(.header) {
+	background: rgba(255, 166, 0, 0.6);
+	color: floralwhite;
+	-webkit-box-shadow: 0px 4px 11px -4px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 4px 11px -4px rgba(0,0,0,0.75);
+	box-shadow: 0px 4px 11px -4px rgba(0,0,0,0.75);
+}
+
+img {
+	width: 25px;
+}
+
+.badge {
+	padding: 5px;
+	border-radius: 50%;
+	background: white;
+	padding: 6px 3px;
+}
+
+.black {
+	background: black;
+}
+
+tr:not(.header) {
+	border-top: 1px solid lightgray;
+	border-bottom: 1px solid lightgray;
+	cursor: pointer;
+}
+
+.my-challenge {
+	background: rgb(131, 214, 131);
+	/* background: rgb(125, 190, 125); */
+}
+
+.my-challenge:hover {
+	background: rgb(91, 156, 91) !important;
+}
+
+thead > th {
+	padding: 10px 0;
+}
+
+td {
+	padding: 5px 0;
+}
+
+fa-icon {
+	margin: 5px;
+	color: grey;
+}
+
+button {
+	border: none;
+	background-color: transparent;
+	padding: 0;
 }

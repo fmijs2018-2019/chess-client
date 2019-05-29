@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ChessBoardFactory } from 'chessboardjs';
+import { ChessBoardFactory, BoardConfig } from 'chessboardjs';
 import { ChessInstance, ShortMove, Square } from 'chess.js';
 import { Subscription } from 'rxjs';
 import { AuthService } from './auth.service';
@@ -61,12 +61,12 @@ export class ChessService {
 		this.options = options;
 		this.orientation = options.orientation;
 		this.game = new Chess(options.fen);
-		const cfg = {
+		const cfg: BoardConfig = {
 			draggable: true,
 			position: options.fen || 'start',
-			orientation: options.orientation,
-			onDragStart: this.onDragStart,
-			onDrop: this.onDrop,
+			orientation: options.orientation as any,
+			onDragStart: this.onDragStart as any,
+			onDrop: this.onDrop as any,
 			onSnapEnd: this.onSnapEnd
 		};
 		this.board = ChessBoard(options.elementId, cfg);

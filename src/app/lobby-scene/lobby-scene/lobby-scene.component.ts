@@ -11,15 +11,87 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 export class LobbySceneComponent implements OnInit, OnDestroy {
 
-	challenges: IChallenge[];
-	myChallenge: IChallenge;
+	challenges = [
+		{
+			id: 'q23o4',
+			socketId: 'asdf',
+			sub: 'pesho',
+			pieces: 'white',
+		},
+		{
+			id: 'q23o4',
+			socketId: 'asdf',
+			sub: 'pesho',
+			pieces: 'white',
+		},
+		{
+			id: 'q23o4',
+			socketId: 'asdf',
+			sub: 'pesho',
+			pieces: 'white',
+		},
+		{
+			id: 'q23o4',
+			socketId: 'asdf',
+			sub: 'pesho',
+			pieces: 'white',
+		},
+		{
+			id: 'q23o4',
+			socketId: 'asdf',
+			sub: 'pesho',
+			pieces: 'white',
+		},
+		{
+			id: 'q23o4',
+			socketId: 'asdf',
+			sub: 'pesho',
+			pieces: 'white',
+		},
+		{
+			id: 'q23o4',
+			socketId: 'asdf',
+			sub: 'pesho',
+			pieces: 'white',
+		},
+		{
+			id: 'q23o4',
+			socketId: 'asdf',
+			sub: 'pesho',
+			pieces: 'white',
+		},
+		{
+			id: 'q23o4',
+			socketId: 'asdf',
+			sub: 'pesho',
+			pieces: 'white',
+		},
+		{
+			id: 'q23o4',
+			socketId: 'asdf',
+			sub: 'pesho',
+			pieces: 'white',
+		},
+		{
+			id: 'q23o4',
+			socketId: 'asdf',
+			sub: 'pesho',
+			pieces: 'white',
+		}
+	];
+	myChallenge = {
+		id: 'q23o4',
+		socketId: 'asdf',
+		sub: 'pesho',
+		pieces: 'black',
+	};
 
 	constructor(private lobbyWebSocketService: LobbyWebSocketService,
 		private authService: AuthService) { }
 
 	ngOnInit() {
-		this.lobbyWebSocketService.connect()
-		this.challenges = this.lobbyWebSocketService.getChallenges();
+		// this.lobbyWebSocketService.connect()
+		// this.challenges = this.lobbyWebSocketService.getChallenges();
 	}
 
 	createChallenge() {

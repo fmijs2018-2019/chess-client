@@ -1,3 +1,13 @@
 .header-container {
 	text-align: center;
 }
+
+/* .container {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.challenges-container {
+	width: 700px;
+} */
