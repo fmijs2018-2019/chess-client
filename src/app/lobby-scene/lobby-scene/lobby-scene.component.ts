@@ -3,6 +3,8 @@ import { IChallenge } from 'src/app/models/IChallenge';
 import { LobbyWebSocketService, LobbyEvents } from '../../core/services/lobby-web-socket.service';
 import { ILobbyEvent } from 'src/app/models/events/ILobbyEvent';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { CreateChallengeModalComponent } from '../create-challenge-modal/create-challenge-modal.component';
 
 @Component({
 	selector: 'app-lobby-scene',
@@ -11,115 +13,45 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 export class LobbySceneComponent implements OnInit, OnDestroy {
 
-	challenges = [
-		{
-			id: 'q23o4',
-			socketId: 'asdf',
-			sub: 'pesho',
-			pieces: 'white',
-		},
-		{
-			id: 'q23o4',
-			socketId: 'asdf',
-			sub: 'pesho',
-			pieces: 'white',
-		},
-		{
-			id: 'q23o4',
-			socketId: 'asdf',
-			sub: 'pesho',
-			pieces: 'white',
-		},
-		{
-			id: 'q23o4',
-			socketId: 'asdf',
-			sub: 'pesho',
-			pieces: 'white',
-		},
-		{
-			id: 'q23o4',
-			socketId: 'asdf',
-			sub: 'pesho',
-			pieces: 'white',
-		},
-		{
-			id: 'q23o4',
-			socketId: 'asdf',
-			sub: 'pesho',
-			pieces: 'white',
-		},
-		{
-			id: 'q23o4',
-			socketId: 'asdf',
-			sub: 'pesho',
-			pieces: 'white',
-		},
-		{
-			id: 'q23o4',
-			socketId: 'asdf',
-			sub: 'pesho',
-			pieces: 'white',
-		},
-		{
-			id: 'q23o4',
-			socketId: 'asdf',
-			sub: 'pesho',
-			pieces: 'white',
-		},
-		{
-			id: 'q23o4',
-			socketId: 'asdf',
-			sub: 'pesho',
-			pieces: 'white',
-		},
-		{
-			id: 'q23o4',
-			socketId: 'asdf',
-			sub: 'pesho',
-			pieces: 'white',
-		}
-	];
-	myChallenge = {
-		id: 'q23o4',
-		socketId: 'asdf',
-		sub: 'pesho',
-		pieces: 'black',
-	};
+	modalRef: BsModalRef;
+
+	challenges: IChallenge[];
+	myChallenge: IChallenge;
 
 	constructor(private lobbyWebSocketService: LobbyWebSocketService,
-		private authService: AuthService) { }
+		private authService: AuthService,
+		private modalService: BsModalService) { }
 
 	ngOnInit() {
-		// this.lobbyWebSocketService.connect()
-		// this.challenges = this.lobbyWebSocketService.getChallenges();
+		this.lobbyWebSocketService.connect()
+		this.challenges = this.lobbyWebSocketService.getChallenges();
 	}
 
-	createChallenge() {
+	createChallenge(settings: { piecesColor: 'white' | 'black', time: number | null }) {
+		const userId = this.authService.profilePaylaod.sub;
+		const pieces = settings.piecesColor;
 
-		const lobbyEvent: ILobbyEvent = {
-			type: LobbyEvents.createChallenge,
-			payload: {
-				userId: this.authService.profilePaylaod.sub,
-				pieces: 'black',
-			}
-		}
-		this.lobbyWebSocketService.emitEvent(lobbyEvent, (ch: IChallenge) => this.myChallenge = ch);
+		this.lobbyWebSocketService.emitCreateChallenge(pieces, userId, settings.time, (ch: IChallenge) => this.myChallenge = ch);
 	}
 
 	clickRow(id: string) {
-		console.log('scene', id);
 		const isMyChallenge = this.myChallenge && this.myChallenge.id === id;
 
 		if (isMyChallenge) {
 			this.myChallenge = undefined;
+			this.lobbyWebSocketService.emitRemoveChallenge(id);
+		} else {
+			const userId = this.authService.profilePaylaod.sub;
+			this.lobbyWebSocketService.emitApproveChallenge(id, userId);
 		}
+	}
 
-		const lobbyEvent: ILobbyEvent = {
-			type: isMyChallenge ? LobbyEvents.removeChallenge : LobbyEvents.approveChallenge,
-			payload: { challengeId: id, userId: this.authService.profilePaylaod.sub }
-		}
-
-		this.lobbyWebSocketService.emitEvent(lobbyEvent);
+	openModal() {
+		this.modalRef = this.modalService.show(CreateChallengeModalComponent);
+		this.modalService.onHidden.subscribe(() => {
+			this.createChallenge(this.modalRef.content);
+			this.modalRef.hide();
+		})
 	}
 
 	ngOnDestroy() {

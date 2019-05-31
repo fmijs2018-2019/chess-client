@@ -15,18 +15,18 @@ export class ChallengesListComponent implements OnInit {
 	@Input()
 	myChallenge: IChallenge;
 
+	@Output()
+	onRowClick = new EventEmitter<string>();
+	
 	// icons
 	faTimes = faTimes;
 	faSignInAlt = faSignInAlt;
 	faChess = faChess;
-	
+
 	constructor() { }
-	
+
 	ngOnInit() {
 	}
-
-	@Output()
-	onRowClick = new EventEmitter<string>();
 
 	clickRow(id: string) {
 		this.onRowClick.emit(id);

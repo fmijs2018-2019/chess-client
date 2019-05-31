@@ -43,8 +43,16 @@ export class LobbyWebSocketService {
 		return this.challenges;
 	}
 
-	emitEvent = (event: ILobbyEvent, callback?: any) => {
-		this.socket.emit(event.type, event.payload, callback);
+	emitCreateChallenge(pieces: 'white' | 'black', userId: string, time?: number, callback?: any) {
+		this.socket.emit(LobbyEvents.createChallenge, { pieces, userId, time }, callback);
+	}
+
+	emitApproveChallenge(challengeId: string, userId: string, callback?: any) {
+		this.socket.emit(LobbyEvents.approveChallenge, challengeId, userId, callback);
+	}
+
+	emitRemoveChallenge(challengeId: string, callback?: any) {
+		this.socket.emit(LobbyEvents.removeChallenge, challengeId, callback);
 	}
 
 	connect = () => {

@@ -1,0 +1,39 @@
+[type=radio] {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+[type=radio]+img {
+	cursor: pointer;
+}
+
+[type=radio]:checked+img {
+	border-bottom: solid 3px green;
+}
+
+img {
+	width: 50px;
+	padding: 2px;
+	border-bottom: solid 3px transparent;
+}
+
+.row {
+	align-items: center;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.separator {
+	font-weight: bold;
+	padding: 10px;
+}
+
+h5 {
+	text-align: center;	
+}
+
+select {
+	max-width: 150px;
+}

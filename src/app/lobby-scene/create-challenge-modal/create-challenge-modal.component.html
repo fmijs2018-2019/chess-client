@@ -1,0 +1,50 @@
+<div class="modal-header">
+	<h4 class="modal-title pull-left">New Challenge</h4>
+	<button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="col-6">
+			<h5>Orientation:</h5>
+		</div>
+		<div class="col-6">
+			<label>
+				<input type="radio" [formControl]="piecesColor" value="white" name="pieces">
+				<img src="assets/img/white.png" alt="image">
+			</label>
+			<span class="separator">or</span>
+			<label>
+				<input type="radio" [formControl]="piecesColor" value="black" name="pieces">
+				<img src="assets/img/black.png" alt="image">
+			</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-6">
+			<h5>Time:</h5>
+		</div>
+		<div class="col-6">
+			<select class="custom-select">
+				<option selected>-</option>
+				<option disabled>5 min</option>
+				<option disabled>10 min</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-6">
+			<h5>Game variation:</h5>
+		</div>
+		<div class="col-6">
+			<select class="custom-select">
+				<option selected>Standard</option>
+			</select>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-success" (click)="createChallenge()">Create</button>
+	<button type="button" class="btn btn-outline-dark" (click)="bsModalRef.hide()">Cancel</button>
+</div>

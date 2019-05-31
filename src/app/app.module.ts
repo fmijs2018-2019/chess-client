@@ -10,6 +10,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CoreModule } from './core/core.module';
 import { LobbySceneModule } from './lobby-scene/lobby-scene.module';
 import { GameModule } from './game/game.module';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
 	declarations: [
@@ -25,7 +26,8 @@ import { GameModule } from './game/game.module';
 		CoreModule,
 		LobbySceneModule,
 		GameModule,
-		BsDropdownModule.forRoot()
+		BsDropdownModule.forRoot(),
+		ModalModule.forRoot()
 	],
 	providers: [
 	],

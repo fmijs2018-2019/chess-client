@@ -22,7 +22,6 @@ table {
 	background: white;
 }
 
-
 tr:hover:not(.header) {
 	background: rgba(255, 166, 0, 0.6);
 	color: floralwhite;
@@ -71,7 +70,11 @@ td {
 
 fa-icon {
 	margin: 5px;
-	color: grey;
+	color: inherit;
+}
+
+.icon-color {
+	color: inherit;
 }
 
 button {
