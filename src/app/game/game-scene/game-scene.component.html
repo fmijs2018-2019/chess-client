@@ -1,6 +1,28 @@
 <div class="header-container">
-	<h1>Live game</h1>
+	<h1>Standart game</h1>
 </div>
 <div class="container">
-	<div id="board"></div>
+	<div class="row">
+		<div class="col-3">
+			<div class="clock-container">
+				<img src="assets/img/black.png" alt="image">
+				<span>
+					00:00
+				</span>
+			</div>
+			<app-status-card></app-status-card>
+		</div>
+		<div class="col-6">
+			<div id="board"></div>
+		</div>
+		<div class="col-3">
+			<div class="clock-container">
+				<img src="assets/img/white.png" alt="image">
+				<span>
+					00:00
+				</span>
+			</div>
+			<app-chat></app-chat>
+		</div>
+	</div>
 </div>

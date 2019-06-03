@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -9,7 +9,10 @@ import { FormControl } from '@angular/forms';
 })
 export class CreateChallengeModalComponent implements OnInit, OnDestroy {
 
-	constructor(public bsModalRef: BsModalRef, private modalService: BsModalService) { }
+	@Output()
+	action = new EventEmitter();
+
+	constructor(public bsModalRef: BsModalRef) { }
 
 	piecesColor = new FormControl('white');
 
@@ -17,8 +20,7 @@ export class CreateChallengeModalComponent implements OnInit, OnDestroy {
 	}
 
 	createChallenge() {
-		this.bsModalRef.content = {piecesColor: this.piecesColor.value, time: null};
-		this.bsModalRef.hide();
+		this.action.emit({ piecesColor: this.piecesColor.value, time: null });
 	}
 
 	ngOnDestroy() {

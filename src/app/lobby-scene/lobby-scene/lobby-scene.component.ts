@@ -5,6 +5,7 @@ import { ILobbyEvent } from 'src/app/models/events/ILobbyEvent';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CreateChallengeModalComponent } from '../create-challenge-modal/create-challenge-modal.component';
+import { take } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-lobby-scene',
@@ -48,12 +49,12 @@ export class LobbySceneComponent implements OnInit, OnDestroy {
 
 	openModal() {
 		this.modalRef = this.modalService.show(CreateChallengeModalComponent);
-		this.modalService.onHidden.subscribe(() => {
-			this.createChallenge(this.modalRef.content);
+		console.log(this.modalRef.content);
+		this.modalRef.content.action.pipe(take(1)).subscribe((value) => {
+			this.createChallenge(value);
 			this.modalRef.hide();
-		})
+		});
 	}
 
-	ngOnDestroy() {
-	}
+	ngOnDestroy() {	}
 }

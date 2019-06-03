@@ -6,3 +6,23 @@
 	width: 550px;
 	margin: auto;
 }
+
+.clock-container {
+	border: solid 1px lightgray;
+    margin-bottom: 10px;
+    padding: 10px;
+	font-size: 35px;
+	display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+h1 {
+	font-weight: lighter;
+    font-size: 2em;
+    padding: 10px;
+}
+
+img {
+	width: 50px;
+}
