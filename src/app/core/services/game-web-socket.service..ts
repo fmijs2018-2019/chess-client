@@ -15,6 +15,7 @@ export enum GameEvents {
 	onMove = 'onMove',
 	sendMesssage = 'sendMessage',
 	onMessage = 'onMessage',
+	onTimeExpired = 'onTimeExpired',
 }
 
 interface IGameSocketIoOptions {
@@ -31,6 +32,12 @@ export class GameWebSocketService {
 	emitMessage = (matchId: string, message: IMessageEvent) => {
 		if (this.socket) {
 			this.socket.emit(GameEvents.sendMesssage, matchId, message);
+		}
+	}
+
+	emitTimeExpired = (matchId: string, color: 'w' | 'b') => {
+		if (this.socket) {
+			this.socket.emit(GameEvents.onTimeExpired, matchId, color);
 		}
 	}
 

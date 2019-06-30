@@ -3,24 +3,24 @@
 </div>
 <div class="container">
 	<div class="row">
-		<div class="col-3">
+		<div class="col-sm-4 col-md-3">
 			<div class="clock-container">
-				<img src="assets/img/black.png" alt="image">
+				<img *ngIf="orientation" [src]="'assets/img/' + orientation + '.png'" alt="image">
 				<span>
-					00:00
+					{{myTimer ? getTimeStrFromSeconds(myTimer.seconds) : '-'}}
 				</span>
 			</div>
 			<app-status-card></app-status-card>
-			<app-moves-history-card></app-moves-history-card>
+			<app-moves-history-card [moves]="moves"></app-moves-history-card>
 		</div>
-		<div class="col-6">
+		<div class="col-sm-4 col-md-6">
 			<div id="board"></div>
 		</div>
-		<div class="col-3">
+		<div class="col-sm-4 col-md-3">
 			<div class="clock-container">
-				<img src="assets/img/white.png" alt="image">
+				<img *ngIf="opponentOrientation" [src]="'assets/img/' + opponentOrientation + '.png'" alt="image">
 				<span>
-					00:00
+					{{opponentTimer ? getTimeStrFromSeconds(opponentTimer.seconds) : '-'}}
 				</span>
 			</div>
 			<app-chat></app-chat>
