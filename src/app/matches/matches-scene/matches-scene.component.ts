@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IMatch } from 'src/app/models/api/IMatch';
 import { Router } from '@angular/router';
 import { ChessApiService } from 'src/app/core/services/chess-api.service';
-import { Subscription, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { IProfilePayload } from 'src/app/models/auth/IProfilePayload';
 
