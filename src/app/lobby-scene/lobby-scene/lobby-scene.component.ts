@@ -55,5 +55,7 @@ export class LobbySceneComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	ngOnDestroy() {	}
+	ngOnDestroy() {
+		this.lobbyWebSocketService.emitDisconnectLobby();
+	}
 }

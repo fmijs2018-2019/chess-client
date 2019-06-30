@@ -1,0 +1,22 @@
+<div class="header-container">
+	<h1>Match moves</h1>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-6">
+			<div id="board"></div>
+		</div>
+		<div class="col-md-6">
+			<div class="moves-container">
+				<span class="move-element start-element" (click)="onStartClick()">Start</span>
+				<span class="move-element" *ngFor="let move of moves; let i = index"
+					[ngClass]="{'color': currentMoveIndex === i}"
+					(click)="onMoveClick(i)">{{move.from}}-{{move.to}}</span>
+			</div>
+			<div class="buttons-container">
+				<button class="btn btn-dark btn-md" [ngClass]="{'disabled': isPrevDisabled}" (click)="onPrevClick()">prev</button>
+				<button class="btn btn-dark btn-md" [ngClass]="{'disabled': isNextDisabled}" (click)="onNextClick()">next</button>
+			</div>
+		</div>
+	</div>
+</div>

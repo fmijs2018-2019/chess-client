@@ -7,10 +7,10 @@ import { HomeModule } from './home/home.module';
 import { CallbackModule } from './callback/callback.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { CoreModule } from './core/core.module';
 import { LobbySceneModule } from './lobby-scene/lobby-scene.module';
 import { GameModule } from './game/game.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { MatchesModule } from './matches/matches.module';
 
 @NgModule({
 	declarations: [
@@ -23,9 +23,9 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 		SharedModule,
 		CallbackModule,
 		HomeModule,
-		CoreModule,
 		LobbySceneModule,
 		GameModule,
+		MatchesModule,
 		BsDropdownModule.forRoot(),
 		ModalModule.forRoot()
 	],
