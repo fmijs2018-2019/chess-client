@@ -14,27 +14,27 @@
 				<h3 class="statistics-header">Games statistics:</h3>
 				<p>
 					<span class="label">Total games count</span>
-					<span>{{userStatistics.totalGamesCount}}</span>
+					<span>{{(userStatistics$ | async)?.totalGamesCount}}</span>
 				</p>
 				<p>
 					<span class="label">Total wins</span>
-					<span>{{userStatistics.totalWins}}</span>
+					<span>{{(userStatistics$ | async)?.totalWins}}</span>
 				</p>
 				<p>
 					<span class="label">Total loses</span>
-					<span>{{userStatistics.totalLoses}}</span>
+					<span>{{(userStatistics$ | async)?.totalLoses}}</span>
 				</p>
 				<p>
 					<span class="label">Total stalemates</span>
-					<span>{{userStatistics.totalStalemate}}</span>
+					<span>{{(userStatistics$ | async)?.totalDraws}}</span>
 				</p>
 				<p>
 					<span class="label">Total games as white player</span>
-					<span>{{userStatistics.totalGamesAsWhite}}</span>
+					<span>{{(userStatistics$ | async)?.totalGamesAsWhite}}</span>
 				</p>
 				<p>
 					<span class="label">Total games as black player</span>
-					<span>{{userStatistics.totalGamesAsBlack}}</span>
+					<span>{{(userStatistics$ | async)?.totalGamesAsBlack}}</span>
 				</p>
 			</div>
 		</div>

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { IProfilePayload } from 'src/app/models/auth/IProfilePayload';
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
+import { ChessApiService } from 'src/app/core/services/chess-api.service';
+import { IUserStatistics } from 'src/app/models/api/IUserStatistics';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'app-profile-scene',
@@ -12,19 +15,14 @@ export class ProfileSceneComponent implements OnInit {
 	public faUserSecret = faUserSecret;
 
 	public profilePayload: IProfilePayload;
-	public userStatistics = {
-		totalGamesCount: 12,
-		totalWins: 7,
-		totalLoses: 5,
-		totalStalemate: 0,
-		totalGamesAsWhite: 4,
-		totalGamesAsBlack: 8,
-	}
+	public userStatistics$: Observable<IUserStatistics>;
+	public statisticsLoaded = false;
 
-	constructor(private authService: AuthService) { }
+	constructor(private authService: AuthService, private chessApiService: ChessApiService) { }
 
 	ngOnInit() {
 		this.profilePayload = this.authService.profilePaylaod;
+		this.userStatistics$ = this.chessApiService.getStatistics();
 	}
 
 }
