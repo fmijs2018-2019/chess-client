@@ -1,8 +1,9 @@
 .messages-container {
 	border: solid 1px lightgray;
-	margin-bottom: 10px;
-	padding: 10px;
-	height: 460px;
+    margin-bottom: 10px;
+    padding: 10px;
+    overflow-y: auto;
+    height: 400px;
 }
 
 img {
@@ -16,6 +17,7 @@ button {
 
 .message {
 	word-wrap: break-word;
+	color: aqua;
 }
 
 .my-message {

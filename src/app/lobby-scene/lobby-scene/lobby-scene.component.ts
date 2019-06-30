@@ -48,7 +48,6 @@ export class LobbySceneComponent implements OnInit, OnDestroy {
 
 	openModal() {
 		this.modalRef = this.modalService.show(CreateChallengeModalComponent);
-		console.log(this.modalRef.content);
 		this.modalRef.content.action.pipe(take(1)).subscribe((value) => {
 			this.createChallenge(value);
 			this.modalRef.hide();

@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IMessageEvent } from 'src/app/models/api/IMessageEvent';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { IMoveEvent } from 'src/app/models/api/IMoveEvent';
 
 @Component({
 	selector: 'app-chat',
@@ -9,23 +10,27 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 export class ChatComponent implements OnInit {
 
-	// @Input()
-	messages: any = [
-		{ sender: 'petq', message: 'hi' },
-		{ sender: 'petq', message: 'hi' },
-		{ sender: 'petq', message: 'Set the word delimiter by typeaheadPhraseDelimiters to match exact phrase.' },
-		{ sender: 'petq', message: 'This is demo with delimeters "&" and ","' },
-		{ sender: 'petq', message: 'hi' },
-	];
+	@Input()
+	messages: IMessageEvent[];
+
+	@Input()
+	moves: IMoveEvent[];
 
 	constructor(private authService: AuthService) { }
 
 	ngOnInit() {
-		this.messages[2].sender = this.authService.profilePaylaod.sub;
 	}
 
-	sendMessage() {
+	text = '';
 
+	@Output()
+	sendMessage = new EventEmitter<string>();
+
+	clickSend = () => {
+		if (this.text !== '') {
+			this.sendMessage.emit(this.text);
+			this.text = '';
+		}
 	}
 
 	checkIfMyMessage(senderId: string) {

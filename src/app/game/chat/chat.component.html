@@ -4,10 +4,10 @@
 	</div>
 </div>
 <div class="input-group mb-3">
-	<input type="text" class="form-control" placeholder="Write message..." aria-describedby="message-input">
+	<input (keydown.enter)="clickSend()" [(ngModel)]="text" type="text" class="form-control" placeholder="Write message..." aria-describedby="message-input">
 	<div class="input-group-append">
 		<span class="input-group-text" id="message-input">
-			<img src="assets/img/send.png" alt="image" (click)="sendMessage()">
+			<img src="assets/img/send.png" alt="image" (click)="clickSend()">
 		</span>
 	</div>
 </div>

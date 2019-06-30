@@ -23,7 +23,7 @@
 					{{opponentTimer ? getTimeStrFromSeconds(opponentTimer.seconds) : '-'}}
 				</span>
 			</div>
-			<app-chat></app-chat>
+			<app-chat [moves]="moves" [messages]="messages" (sendMessage)="sendMessage($event)"></app-chat>
 		</div>
 	</div>
 </div>
