@@ -1,0 +1,30 @@
+.header-container {
+	text-align: center;
+}
+
+img {
+	width: 25px;
+}
+
+.winner {
+	width: 35px;
+}
+
+.label {
+	font-weight: bold;
+}
+
+.match-row {
+	border: solid 1px lightgray;
+    padding: 10px;
+    margin: 10px 0;
+	border-radius: 10px;
+	display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.match-row:hover {
+	background-color: #f7e3b0;
+	cursor: pointer;
+}

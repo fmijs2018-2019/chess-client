@@ -1,4 +1,5 @@
 export interface IMatch {
+	id: string,
     result?: string,
     totalTime?: number,
     whiteP?: string,

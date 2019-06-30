@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ChessBoardFactory, BoardConfig } from 'chessboardjs';
 import { ChessInstance, ShortMove, Square } from 'chess.js';
-import { Subscription } from 'rxjs';
-import { AuthService } from './auth.service';
-import { Options } from 'selenium-webdriver/ie';
-import { IMove } from 'src/app/models/api/IMove';
 
 declare const Chess: {
     /**

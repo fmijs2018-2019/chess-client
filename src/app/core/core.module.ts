@@ -4,6 +4,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { AuthService } from './services/auth.service';
 import { LobbyWebSocketService } from './services/lobby-web-socket.service';
 import { GameWebSocketService } from './services/game-web-socket.service.';
+import { ChessApiService } from './services/chess-api.service';
 
 @NgModule({
 	declarations: [],
@@ -14,7 +15,8 @@ import { GameWebSocketService } from './services/game-web-socket.service.';
 		AuthGuard,
 		AuthService,
 		LobbyWebSocketService,
-		GameWebSocketService
+		GameWebSocketService,
+		ChessApiService
 	]
 })
 export class CoreModule { }

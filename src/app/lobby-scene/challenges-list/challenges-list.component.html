@@ -29,8 +29,8 @@
 			</tr>
 			<tr *ngFor="let challenge of challenges" (click)="clickRow(challenge.id)">
 				<td>
-					<img *ngIf="challenge.pieces === 'white'" src="assets/img/white.png" alt="image">
-					<img *ngIf="challenge.pieces === 'black'" src="assets/img/black.png" alt="image">
+					<img *ngIf="challenge.pieces === 'white'" src="assets/img/black.png" alt="image">
+					<img *ngIf="challenge.pieces === 'black'" src="assets/img/white.png" alt="image">
 				</td>
 				<td>Anonymous</td>
 				<td>Standart</td>
