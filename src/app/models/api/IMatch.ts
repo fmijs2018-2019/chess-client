@@ -11,4 +11,15 @@ export interface IMatch {
 	winner?: string,
 	timeExpired: boolean,
 	isTimeGame: boolean,
+	matchResult: MatchResult,
 };
+
+export enum MatchResult {
+	NoResult = 0,
+	Checkmate = 1,
+	Stalemate = 2,
+	InsufficentMaterial = 3,
+	ThreefoldRepetition = 4,
+	Draw = 5,
+	OutOfTime = 6,
+}

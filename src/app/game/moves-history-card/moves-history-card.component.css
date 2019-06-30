@@ -2,7 +2,7 @@
 	border: solid 1px lightgray;
     margin: 10px 0;
     padding: 10px;
-    height: 330px;
+    height: 300px;
 	overflow: scroll;
 	text-align: center;
 }
@@ -15,3 +15,4 @@
 	min-width: 100px;
     border-radius: 10px;
 }
+
