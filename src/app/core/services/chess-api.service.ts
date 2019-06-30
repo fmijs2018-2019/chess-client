@@ -5,6 +5,7 @@ import { IMoveEvent } from 'src/app/models/api/IMoveEvent';
 import { AuthService } from './auth.service';
 import { environment } from '../../../environments/environment';
 import { IMatch } from 'src/app/models/api/IMatch';
+import { IUserStatistics } from 'src/app/models/api/IUserStatistics';
 
 @Injectable({
 	providedIn: 'root'
@@ -31,5 +32,9 @@ export class ChessApiService {
 
 	getMoves(matchId: string): Observable<IMoveEvent[]> {
 		return this.httpClient.get(`${this.baseApiUrl}/matches/${matchId}/moves`, { headers: this.headers }) as Observable<IMoveEvent[]>;
+	}
+
+	getStatistics(): Observable<IUserStatistics> {
+		return this.httpClient.get(`${this.baseApiUrl}/statistics`, { headers: this.headers }) as Observable<IUserStatistics>;
 	}
 }

@@ -33,3 +33,9 @@ p {
 	text-align: center;
 	margin: 20px;
 }
+
+h1 {
+	font-weight: lighter;
+	font-size: 2em;
+	padding: 10px;
+}

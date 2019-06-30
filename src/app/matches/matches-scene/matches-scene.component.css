@@ -23,6 +23,12 @@ img {
     align-items: center;
 }
 
+h1 {
+	font-weight: lighter;
+	font-size: 2em;
+	padding: 10px;
+}
+
 .match-row:hover {
 	background-color: #f7e3b0;
 	cursor: pointer;
