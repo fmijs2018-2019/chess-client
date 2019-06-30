@@ -17,7 +17,7 @@
 				</td>
 				<td>Anonymous</td>
 				<td>Standart</td>
-				<td *ngIf="myChallenge.time; else noTimeSet">{{myChallenge.time}}</td>
+				<td *ngIf="myChallenge.time; else noTimeSet">{{getTimeStrFromSeconds(myChallenge.time)}}</td>
 				<ng-template #noTimeSet>
 					<td>-</td>
 				</ng-template>

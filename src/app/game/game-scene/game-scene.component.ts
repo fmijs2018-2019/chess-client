@@ -3,7 +3,7 @@ import { GameWebSocketService, GameEvents } from 'src/app/core/services/game-web
 import { IGameEvent } from 'src/app/models/events/IGameEvent';
 import { ActivatedRoute } from '@angular/router';
 import { IMatch } from 'src/app/models/api/IMatch';
-import { IBoardInitOptions, ChessService } from 'src/app/core/services/chess.service';
+import { IBoardInitOptions, ChessService, EventType } from 'src/app/core/services/chess.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { IMoveEvent } from 'src/app/models/api/IMoveEvent';
 import { ShortMove, Move } from 'chess.js';
@@ -14,7 +14,7 @@ import { ChessBoardInstance } from 'chessboardjs';
 import { ChessTimer } from 'src/app/core/services/timer.service';
 import { ChessUtils } from 'src/app/core/services/utils';
 import { IBoardStatus } from 'src/app/models/api/IBoardStatus';
-
+import * as moment from 'moment';
 
 @Component({
 	selector: 'app-game-scene',
@@ -22,9 +22,6 @@ import { IBoardStatus } from 'src/app/models/api/IBoardStatus';
 	styleUrls: ['./game-scene.component.css']
 })
 export class GameSceneComponent implements OnInit, OnDestroy {
-	ngOnDestroy(): void {
-		this.gameWebSocketService.emitForceDisconnect();
-	}
 
 	matchId: string;
 	match: IMatch;
@@ -67,6 +64,9 @@ export class GameSceneComponent implements OnInit, OnDestroy {
 
 			this.board = this.chessService.init(options);
 			this.moves = this.chessService.getMoves();
+			this.messages = (matchMessages.messages || []).sort((a, b) => {
+				return moment(a.serverTime).valueOf() - moment(b.serverTime).valueOf();
+			});
 
 			this.myTimer = this.match.blackP === userId
 				? this.chessService.getBlackTimer()
@@ -78,9 +78,14 @@ export class GameSceneComponent implements OnInit, OnDestroy {
 
 			window.addEventListener('resize', this.board.resize);
 			this.boardStatus = this.chessService.getBoardStatus();
+
 		});
 	}
 
+	ngOnDestroy(): void {
+		this.gameWebSocketService.emitForceDisconnect();
+		window.removeEventListener('resize', this.board.resize);
+	}
 
 
 	onTimeExpired = (color: 'b' | 'w') => {
@@ -107,8 +112,9 @@ export class GameSceneComponent implements OnInit, OnDestroy {
 	}
 
 	// receive a message
-	onMessage = (message: any) => {
-
+	onMessage = (message: IMessageEvent) => {
+		console.log('received', message);
+		this.messages.push(message);
 	}
 
 	// make a move
@@ -117,7 +123,14 @@ export class GameSceneComponent implements OnInit, OnDestroy {
 	}
 
 	// send message
-	sendMessage = (message: any) => {
-
+	sendMessage = (message: string) => {
+		console.log(message);
+		const messageEvent: IMessageEvent = {
+			message: message,
+			sender: this.authService.profilePaylaod.sub,
+			type: EventType.MessageEvent,
+		}
+		this.gameWebSocketService.emitMessage(this.matchId, messageEvent);
+		this.messages.push(messageEvent);
 	}
 }

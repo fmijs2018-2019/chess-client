@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IChallenge } from 'src/app/models/IChallenge';
 import { faTimes, faSignInAlt, faChess } from '@fortawesome/free-solid-svg-icons';
+import { ChessUtils } from 'src/app/core/services/utils';
 
 @Component({
 	selector: 'app-challenges-list',
@@ -24,6 +25,10 @@ export class ChallengesListComponent implements OnInit {
 	faChess = faChess;
 
 	constructor() { }
+
+	getTimeStrFromSeconds = (seconds: number) => {
+		return ChessUtils.getTimeStrFromSeconds(seconds);
+	}
 
 	ngOnInit() {
 	}
