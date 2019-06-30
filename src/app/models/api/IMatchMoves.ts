@@ -1,6 +1,6 @@
-import { IMove } from './IMove';
+import { IMoveEvent } from './IMoveEvent';
 
 export interface IMatchMoves {
 	matchId: string,
-	moves: IMove[]
+	moves: IMoveEvent[]
 }

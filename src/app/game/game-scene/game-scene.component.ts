@@ -5,11 +5,12 @@ import { ActivatedRoute } from '@angular/router';
 import { IMatch } from 'src/app/models/api/IMatch';
 import { IBoardInitOptions, ChessService } from 'src/app/core/services/chess.service';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { IMove } from 'src/app/models/api/IMove';
+import { IMoveEvent } from 'src/app/models/api/IMoveEvent';
 import { ShortMove, Move } from 'chess.js';
 import { IMatchMoves } from 'src/app/models/api/IMatchMoves';
 import { IMatchMessages } from 'src/app/models/api/IMatchMessages';
-import { IMessage } from 'src/app/models/api/IMessage';
+import { IMessageEvent } from 'src/app/models/api/IMessageEvent';
+import { ChessBoardInstance } from 'chessboardjs';
 
 @Component({
 	selector: 'app-game-scene',
@@ -20,9 +21,9 @@ export class GameSceneComponent implements OnInit {
 
 	matchId: string;
 	match: IMatch;
-	moves: IMove[];
-	messages: IMessage[];
-	board;
+	moves: IMoveEvent[];
+	messages: IMessageEvent[];
+	board: ChessBoardInstance;
 
 	constructor(private gameWebSocketService: GameWebSocketService,
 		private activatedRoute: ActivatedRoute,
@@ -30,50 +31,46 @@ export class GameSceneComponent implements OnInit {
 		private chessService: ChessService) { }
 
 	ngOnInit() {
-		this.gameWebSocketService.connect(this.onMove, this.onMessage);
+		const gameSocketIoOptions = {
+			onMove: this.onMove,
+			onMessage: this.onMessage
+		};
+		this.gameWebSocketService.connect(gameSocketIoOptions);
 		this.activatedRoute.params.subscribe(params => this.matchId = params['id']);
 
-		const event: IGameEvent = {
-			type: GameEvents.joinGame,
-			payload: this.matchId
-		}
-
-		this.gameWebSocketService.emitEvent(event, (match: IMatch, matchMoves: IMatchMoves, matchMessages: IMatchMessages) => {
+		this.gameWebSocketService.emitJoinGame(this.matchId, (match: IMatch, matchMoves: IMatchMoves, matchMessages: IMatchMessages) => {
+			console.log(match, matchMoves, matchMessages)
 			this.match = match;
 			const userId = this.authService.profilePaylaod.sub;
 			const options: IBoardInitOptions = {
 				orientation: this.match.blackP === userId ? 'black' : 'white',
 				elementId: 'board',
-				onDrop: this.onDrop
+				onDrop: this.onDrop,
+				isTimeGame: false,
+				moves: matchMoves.moves || []
 			}
 
 			this.board = this.chessService.init(options);
 		});
 	}
 
-	// when receive a move
-	onMove = (move: IMove) => {
-		this.chessService.move(move.from, move.to);
+	// receive a move
+	onMove = (move: IMoveEvent) => {
+		this.chessService.move(move);
 	}
 
+	// receive a message
 	onMessage = (message: any) => {
 
 	}
 
-	// when make a move
-	onDrop = (move: IMove) => {
-		const event: IGameEvent = {
-			type: GameEvents.makeMove,
-			payload: { matchId: this.matchId, move }
-		}
-		this.gameWebSocketService.emitEvent(event);
+	// make a move
+	onDrop = (move: IMoveEvent) => {
+		this.gameWebSocketService.emitMove(this.matchId, move);
 	}
 
+	// send message
 	sendMessage = (message: any) => {
-		const event: IGameEvent = {
-			type: GameEvents.sendMesssage,
-			payload: {}
-		}
-		this.gameWebSocketService.emitEvent(event);
+		
 	}
 }

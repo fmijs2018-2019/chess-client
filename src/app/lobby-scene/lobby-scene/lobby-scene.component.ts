@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IChallenge } from 'src/app/models/IChallenge';
 import { LobbyWebSocketService, LobbyEvents } from '../../core/services/lobby-web-socket.service';
-import { ILobbyEvent } from 'src/app/models/events/ILobbyEvent';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CreateChallengeModalComponent } from '../create-challenge-modal/create-challenge-modal.component';

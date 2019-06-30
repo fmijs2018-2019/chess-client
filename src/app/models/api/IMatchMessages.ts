@@ -1,6 +1,6 @@
-import { IMessage } from './IMessage';
+import { IMessageEvent } from './IMessageEvent';
 
 export interface IMatchMessages {
 	matchId: string,
-	messages: IMessage[]
+	messages: IMessageEvent[]
 }
