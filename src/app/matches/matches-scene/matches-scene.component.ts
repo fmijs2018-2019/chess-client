@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { IMatch } from 'src/app/models/api/IMatch';
 import { Router } from '@angular/router';
+import { ChessApiService } from 'src/app/core/services/chess-api.service';
+import { Subscription, Observable } from 'rxjs';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { IProfilePayload } from 'src/app/models/auth/IProfilePayload';
 
 @Component({
 	selector: 'app-matches-scene',
@@ -9,51 +13,21 @@ import { Router } from '@angular/router';
 })
 export class MatchesSceneComponent implements OnInit {
 
-	matches: IMatch[] = [
-		{
-			id: '1',
-			result: 'checkmate',
-			totalTime: 500000,
-			whiteP: 'anonymous',
-			blackP: 'anonymous',
-			startTime: new Date().toUTCString(),
-			endTime: new Date().toUTCString(),
-			isLive: false,
-			isFinalized: true,
-			winner: 'white'
-		},
-		{
-			id: '1',
-			result: 'checkmate',
-			totalTime: 500000,
-			whiteP: 'anonymous',
-			blackP: 'anonymous',
-			startTime: new Date().toUTCString(),
-			endTime: new Date().toUTCString(),
-			isLive: false,
-			isFinalized: true,
-			winner: 'black'
-		},
-		{
-			id: '1',
-			result: 'checkmate',
-			totalTime: 500000,
-			whiteP: 'anonymous',
-			blackP: 'anonymous',
-			startTime: new Date().toUTCString(),
-			endTime: new Date().toUTCString(),
-			isLive: false,
-			isFinalized: true,
-			winner: 'white'
-		},
-	]
+	public matches$: Observable<IMatch[]>;
+	public profile: IProfilePayload;
 
-	constructor(private router: Router) { }
+	constructor(private router: Router,
+		private chessApiService: ChessApiService,
+		private authService: AuthService) {
+	}
 
 	ngOnInit() {
+		this.matches$ = this.chessApiService.getAllMatches();
+		this.profile = Object.assign({}, this.authService.profilePaylaod);
 	}
 
 	public onMatchClick(matchId: string) {
+		console.log(matchId);
 		this.router.navigate(['/matches', matchId]);
 	}
 }

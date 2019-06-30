@@ -7,11 +7,9 @@ import { HomeModule } from './home/home.module';
 import { CallbackModule } from './callback/callback.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { CoreModule } from './core/core.module';
 import { LobbySceneModule } from './lobby-scene/lobby-scene.module';
 import { GameModule } from './game/game.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { MatchesSceneComponent } from './matches/matches-scene/matches-scene.component';
 import { MatchesModule } from './matches/matches.module';
 
 @NgModule({
@@ -25,7 +23,6 @@ import { MatchesModule } from './matches/matches.module';
 		SharedModule,
 		CallbackModule,
 		HomeModule,
-		CoreModule,
 		LobbySceneModule,
 		GameModule,
 		MatchesModule,

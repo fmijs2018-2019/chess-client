@@ -22,7 +22,9 @@ interface IGameSocketIoOptions {
 	onMessage?: (message: IMessageEvent) => void;
 }
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class GameWebSocketService {
 
 	private socket;
@@ -43,6 +45,12 @@ export class GameWebSocketService {
 	emitMove = (matchId: string, move: IMoveEvent) => {
 		if (this.socket) {
 			this.socket.emit(GameEvents.makeMove, matchId, move);
+		}
+	}
+
+	emitForceDisconnect = () => {
+		if(this.socket) {
+			this.socket.emit('forceDisconnect');
 		}
 	}
 

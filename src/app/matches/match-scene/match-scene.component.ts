@@ -3,7 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { BoardConfig, ChessBoardFactory } from 'chessboardjs';
 import { Subscription } from 'rxjs';
 import { ChessApiService } from 'src/app/core/services/chess-api.service';
-import { IMove } from 'src/app/models/api/IMove';
+import { IMoveEvent } from 'src/app/models/api/IMoveEvent';
+import { IMatch } from 'src/app/models/api/IMatch';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 declare const ChessBoard: ChessBoardFactory;
 
@@ -16,29 +18,38 @@ export class MatchSceneComponent implements OnInit, OnDestroy {
 	board;
 	currentMoveIndex: number = -1;
 	matchId: string;
-	moves: IMove[] = [];
+	match: IMatch;
+	moves: IMoveEvent[] = [];
 	isPrevDisabled = true;
 	isNextDisabled = true;
 
 	subscription = new Subscription();
 
 	constructor(private activatedRoute: ActivatedRoute,
-		private chessApiService: ChessApiService) { }
+		private chessApiService: ChessApiService,
+		private authService: AuthService) { }
 
 	ngOnInit() {
-		this.subscription.add(this.activatedRoute.params.subscribe(params => this.matchId = params['id']));
-		this.subscription.add(this.chessApiService.getMoves(this.matchId).subscribe((moves) => {
-			this.moves = Object.assign([], moves);
+		this.subscription.add(this.activatedRoute.params.subscribe(params => {
+			this.matchId = params['id']
 
-			this.isNextDisabled = this.moves.length <= 0;
+			this.subscription.add(this.chessApiService.getMatch(this.matchId).subscribe(m => {
+				this.match = Object.assign({}, m);
+	
+				const cfg: BoardConfig = {
+					draggable: false,
+					position: 'start',
+					orientation: this.match.whiteP === this.authService.profilePaylaod.sub ? 'white' : 'black'
+				};
+				this.board = ChessBoard('board', cfg);
+			}));
+
+			this.subscription.add(this.chessApiService.getMoves(this.matchId).subscribe((moves) => {
+				this.moves = Object.assign([], moves);
+	
+				this.isNextDisabled = this.moves.length <= 0;
+			}));
 		}));
-
-		const cfg: BoardConfig = {
-			draggable: false,
-			position: 'start',
-			orientation: 'white'
-		};
-		this.board = ChessBoard('board', cfg);
 	}
 
 	ngOnDestroy() {

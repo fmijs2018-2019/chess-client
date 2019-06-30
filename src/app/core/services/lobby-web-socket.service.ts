@@ -26,7 +26,9 @@ export const arrayRemoveWhile = <T>(arr: T[], callback: (v: T, ind: number) => b
 	}
 };
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class LobbyWebSocketService {
 
 	private socket;
@@ -50,6 +52,10 @@ export class LobbyWebSocketService {
 
 	emitRemoveChallenge(challengeId: string, callback?: any) {
 		this.socket.emit(LobbyEvents.removeChallenge, challengeId, callback);
+	}
+
+	emitDisconnectLobby() {
+		this.socket.emit('forceDisconnect');
 	}
 
 	connect = () => {

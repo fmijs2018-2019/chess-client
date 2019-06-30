@@ -21,7 +21,6 @@ img {
 	border-radius: 10px;
 	display: flex;
     align-items: center;
-    text-align: center;
 }
 
 .match-row:hover {
