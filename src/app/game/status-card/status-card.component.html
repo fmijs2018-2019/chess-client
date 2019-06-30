@@ -2,16 +2,37 @@
 	<ul class="list-group">
 		<li class="list-group-item">
 			<div class="player-status">
-				<img src="assets/img/white.png" alt="image">
-				<span>Anonymous</span>
+				<img *ngIf="orientation" [src]="'assets/img/' + orientation + '.png'" alt="image">
+				<span class="name-element" style="padding-left: 10px">{{name}}</span>
 				<div class="connectivity"></div>
 			</div>
 			<div class="player-status">
-				<img src="assets/img/black.png" alt="image">
-				<span>Anonymous</span>
+				<img *ngIf="opponentOrientation" [src]="'assets/img/' + opponentOrientation + '.png'" alt="image">
+				<span class="name-element">Anonymous</span>
 				<div class="connectivity"></div>
 			</div>
 		</li>
-		<li class="list-group-item">{{status}}</li>
+		<li class="list-group-item">
+			<div class="row">
+				<div class="col-sm-12 text-center">
+					{{moves && moves.length ? (moves[moves.length - 1].san + ' ' + getTimeStrFromSeconds(moves[moves.length - 1].time)) : ''}}
+				</div>
+			</div>
+			<div *ngIf="status" class="row">
+				<div class="col-sm-12 text-center">
+					({{status}})
+				</div>
+			</div>
+			<div *ngIf="winnerText" class="row">
+				<div class="col-sm-12 text-center">
+					{{winnerText}}
+				</div>
+			</div>
+			<div *ngIf="match && match.isFinalized" class="row">
+				<div class="col-sm-12 text-center">
+					<button (click)="backToLobby()" class="btn btn-link">BACK TO LOBBY</button>
+				</div>
+			</div>
+		</li>
 	</ul>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GameWebSocketService, GameEvents } from 'src/app/core/services/game-web-socket.service.';
 import { IGameEvent } from 'src/app/models/events/IGameEvent';
 import { ActivatedRoute } from '@angular/router';
@@ -13,6 +13,7 @@ import { IMessageEvent } from 'src/app/models/api/IMessageEvent';
 import { ChessBoardInstance } from 'chessboardjs';
 import { ChessTimer } from 'src/app/core/services/timer.service';
 import { ChessUtils } from 'src/app/core/services/utils';
+import { IBoardStatus } from 'src/app/models/api/IBoardStatus';
 
 
 @Component({
@@ -20,7 +21,10 @@ import { ChessUtils } from 'src/app/core/services/utils';
 	templateUrl: './game-scene.component.html',
 	styleUrls: ['./game-scene.component.css']
 })
-export class GameSceneComponent implements OnInit {
+export class GameSceneComponent implements OnInit, OnDestroy {
+	ngOnDestroy(): void {
+		this.gameWebSocketService.emitForceDisconnect();
+	}
 
 	matchId: string;
 	match: IMatch;
@@ -31,6 +35,7 @@ export class GameSceneComponent implements OnInit {
 	opponentTimer: ChessTimer;
 	orientation: 'black' | 'white';
 	opponentOrientation: string;
+	boardStatus: IBoardStatus;
 
 	constructor(private gameWebSocketService: GameWebSocketService,
 		private activatedRoute: ActivatedRoute,
@@ -54,6 +59,7 @@ export class GameSceneComponent implements OnInit {
 				orientation: this.orientation,
 				elementId: 'board',
 				onDrop: this.onDrop,
+				onBoardStatusChange: this.onBoardStatusChange,
 				moves: matchMoves.moves || [],
 				match: this.match,
 				onTimerExpired: this.onTimeExpired
@@ -71,8 +77,11 @@ export class GameSceneComponent implements OnInit {
 				: this.chessService.getBlackTimer();
 
 			window.addEventListener('resize', this.board.resize);
+			this.boardStatus = this.chessService.getBoardStatus();
 		});
 	}
+
+
 
 	onTimeExpired = (color: 'b' | 'w') => {
 		this.gameWebSocketService.emitTimeExpired(this.matchId, color);
@@ -81,6 +90,16 @@ export class GameSceneComponent implements OnInit {
 	getTimeStrFromSeconds = (seconds: number) => {
 		return ChessUtils.getTimeStrFromSeconds(seconds);
 	}
+
+	onBoardStatusChange = (status: IBoardStatus) => {
+		this.boardStatus.gameOver = status.gameOver;
+		this.boardStatus.inCheck = status.inCheck;
+		this.boardStatus.inCheckmate = status.inCheckmate;
+		this.boardStatus.inDraw = status.inDraw;
+		this.boardStatus.inStalemate = status.inStalemate;
+		this.boardStatus.inThreefoldRepetition = status.inThreefoldRepetition;
+		this.boardStatus.insufficientMaterial = status.insufficientMaterial;
+	};
 
 	// receive a move
 	onMove = (move: IMoveEvent) => {

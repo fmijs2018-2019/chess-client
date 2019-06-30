@@ -6,7 +6,8 @@ import { IBoardStatus } from "src/app/models/api/IBoardStatus";
 import { ChessFactoryService } from './chess-factory.service';
 import * as moment from 'moment';
 import { TimerService, ITimerOptions as ITimerInitOptions } from './timer.service';
-import { IMatch } from 'src/app/models/api/IMatch';
+import { IMatch, MatchResult } from 'src/app/models/api/IMatch';
+import { ChessUtils } from './utils';
 
 export declare const Chess: {
     /**
@@ -33,13 +34,7 @@ export interface IBoardInitOptions {
 	match: IMatch;
 	moves: IMoveEvent[],
 	onDrop: (move: IMoveEvent) => void,
-	inCheck?: (status: IBoardStatus) => void,
-	inCheckmate?: (status: IBoardStatus) => void,
-	inDraw?: (status: IBoardStatus) => void,
-	inStalemate?: (status: IBoardStatus) => void,
-	inThreefoldRepetition?: (status: IBoardStatus) => void,
-	inInsufficientMaterial?: (status: IBoardStatus) => void,
-	inGameOver?: (status: IBoardStatus) => void
+	onBoardStatusChange?: (status: IBoardStatus) => void;
 	onTimerExpired?: (color: 'w' | 'b') => void
 }
 
@@ -97,7 +92,7 @@ export class ChessService {
 				const moveMadeAt = moment(lastMove.moveMadeAt).utc();
 				this.timerService.setTimer(lastMove.color, lastMove.time);
 				let elapsedTime = Math.round(moment.duration(now.diff(moveMadeAt)).asSeconds());
-				
+
 				const opositePlayerColor = getOpositePlayerColor(lastMove.color);
 				let opositePlayerTime = 0;
 				for (let i = this.moves.length - 1; i >= 0; i--) {
@@ -137,15 +132,16 @@ export class ChessService {
 		if (!validMove) {
 			return false;
 		}
-		
+
 		this.moves.push(moveEvent);
 		this.board.position(this.board.move(moveStr));
 		const gameStatus = this.getBoardStatus();
 
-		if (!gameStatus.gameOver) {
+		if (gameStatus.gameOver) {
 			this.match.isFinalized = true;
 			this.match.isLive = false;
 			this.match.winner = moveEvent.color;
+			this.match.matchResult = ChessUtils.getMatchResult(gameStatus);
 		}
 
 		if (this.match.isTimeGame) {
@@ -155,8 +151,8 @@ export class ChessService {
 				this.timerService.startTimer(getOpositePlayerColor(moveEvent.color));
 			}
 		}
-		
-		
+
+
 
 		this.onBoardStatusChange(gameStatus);
 		return true;
@@ -198,16 +194,9 @@ export class ChessService {
 	}
 
 	onBoardStatusChange = (status: IBoardStatus) => {
-		const { inCheck, inCheckmate, inDraw: inDraw, inStalemate: inStalemate, inThreefoldRepetition: inThreefoldRepetition,
-			inInsufficientMaterial: insufficientMaterial, inGameOver } = this.options;
-
-		status.inCheck && inCheck && inCheck(status);
-		status.inCheckmate && inCheckmate && inCheckmate(status);
-		status.inDraw && inDraw && inDraw(status);
-		status.inStalemate && inStalemate && inStalemate(status);
-		status.inThreefoldRepetition && inThreefoldRepetition && inThreefoldRepetition(status);
-		status.insufficientMaterial && insufficientMaterial && insufficientMaterial(status);
-		status.gameOver && inGameOver && inGameOver(status);
+		if (this.options.onBoardStatusChange) {
+			this.options.onBoardStatusChange(status);
+		}		
 	}
 
 	onTimerExpired = (color: 'w' | 'b') => {
@@ -215,6 +204,9 @@ export class ChessService {
 		this.match.isFinalized = true;
 		this.match.isLive = false;
 		this.match.winner = getOpositePlayerColor(color);
+		this.match.matchResult = MatchResult.OutOfTime;
+
+		console.log('out of time');
 
 		if (this.options.onTimerExpired) {
 			this.options.onTimerExpired(color);
@@ -239,14 +231,17 @@ export class ChessService {
 			}
 		}
 
-		this.match.isFinalized = true;
-		this.match.isLive = false;
-		this.match.winner = move.color;
+		if (gameStatus.gameOver) {
+			this.match.isFinalized = true;
+			this.match.isLive = false;
+			this.match.winner = move.color;
+			this.match.matchResult = ChessUtils.getMatchResult(gameStatus);
+		}
 
 		var newFENPos = this.game.fen();
 		var seconds = this.match.isTimeGame
-		? this.timerService.getTimer(move.color)
-		: undefined;
+			? this.timerService.getTimer(move.color)
+			: undefined;
 		const moveEvent = this.chessFactory.createMoveEvent(move, gameStatus, oldFENPos, newFENPos, seconds);
 		this.moves.push(moveEvent);
 

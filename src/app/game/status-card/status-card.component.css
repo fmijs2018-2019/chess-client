@@ -19,11 +19,20 @@ span {
 .player-status {
 	display: flex;
 	align-items: center;
-	justify-content: space-evenly;
+	/* justify-content: space-evenly; */
+}
+
+.name-element {
+	overflow: hidden;
+    text-overflow: ellipsis;
+	white-space: nowrap;
+	padding-right: 10px;
+	padding-left: 10px;
 }
 
 .connectivity {
 	width: 10px;
+	min-width: 10px;
 	height: 10px;
 	border-radius: 50%;
 	background: green;
