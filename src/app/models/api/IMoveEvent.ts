@@ -6,5 +6,6 @@ export interface IMoveEvent extends IEvent, Move, IBoardStatus {
 	newFENPos: string,
 	oldFENPos: string,
 	time?: number,
+	moveMadeAt?: string,
 }
 

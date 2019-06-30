@@ -15,12 +15,14 @@ export class CreateChallengeModalComponent implements OnInit, OnDestroy {
 	constructor(public bsModalRef: BsModalRef) { }
 
 	piecesColor = new FormControl('white');
+	time = new FormControl(-1);
 
 	ngOnInit() {
 	}
 
 	createChallenge() {
-		this.action.emit({ piecesColor: this.piecesColor.value, time: null });
+		let time = this.time.value !== "-1" ? +this.time.value : null;
+		this.action.emit({ piecesColor: this.piecesColor.value, time });
 	}
 
 	ngOnDestroy() {

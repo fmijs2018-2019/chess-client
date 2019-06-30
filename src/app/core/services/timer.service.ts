@@ -47,16 +47,10 @@ export class TimerService {
 	}
 
 	startWhiteTimer = () => {
-		if (this.whitePlayerTimerInterval) {
-			return; // timer already started
-		}
-
 		this.whitePlayerTimerInterval = setInterval(() => {
-			var seconds = this.whitePlayerTimer.seconds - 1;
-			if (seconds <= 0) {
+			this.whitePlayerTimer.seconds -= 1;
+			if (this.whitePlayerTimer.seconds <= 0) {
 				this.onTimeExpired('white');
-			} else {
-				this.whitePlayerTimer.seconds = seconds;
 			}
 		}, 1000);
 	}
@@ -111,16 +105,10 @@ export class TimerService {
 	}
 
 	startBlackTimer = () => {
-		if (this.blackPlayerTimerInterval) {
-			return;
-		}
-
 		this.blackPlayerTimerInterval = setInterval(() => {
-			var seconds = this.blackPlayerTimer.seconds - 1;
-			if (seconds <= 0) {
+			this.blackPlayerTimer.seconds -= 1;
+			if (this.blackPlayerTimer.seconds <= 0) {
 				this.onTimeExpired('white');
-			} else {
-				this.blackPlayerTimer.seconds = seconds;
 			}
 		}, 1000);
 	}

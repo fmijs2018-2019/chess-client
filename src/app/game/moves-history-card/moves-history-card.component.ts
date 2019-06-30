@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { IMoveEvent } from 'src/app/models/api/IMoveEvent';
+import { ChessUtils } from 'src/app/core/services/utils';
 
 @Component({
 	selector: 'app-moves-history-card',
@@ -7,17 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MovesHistoryCardComponent implements OnInit {
 
-	moves = [
-		'h2-a8', 'b4-b5', 'c4-b4', 'h2-a8', 'b4-b5', 'c4-b4', 'h2-a8', 'b4-b5', 'c4-b4', 
-		'h2-a8', 'b4-b5', 'c4-b4', 'h2-a8', 'b4-b5', 'c4-b4', 'h2-a8', 'b4-b5', 'c4-b4', 
-		'h2-a8', 'b4-b5', 'c4-b4', 'h2-a8', 'b4-b5', 'c4-b4', 'h2-a8', 'b4-b5', 'c4-b4', 
-		'h2-a8', 'b4-b5', 'c4-b4', 'h2-a8', 'b4-b5', 'c4-b4', 'h2-a8', 'b4-b5', 'c4-b4', 
-		'h2-a8', 'b4-b5', 'c4-b4', 'h2-a8', 'b4-b5', 'c4-b4', 'h2-a8', 'b4-b5', 'c4-b4', 
-		'h2-a8', 'b4-b5', 'c4-b4', 'h2-a8', 'b4-b5', 'c4-b4', 'h2-a8', 'b4-b5', 'c4-b4', ]
+	@Input()
+	moves: IMoveEvent[];
 
 	constructor() { }
 
 	ngOnInit() {
+	}
+
+	getTimeStrFromSeconds = (seconds: number) => {
+		return ChessUtils.getTimeStrFromSeconds(seconds);
 	}
 
 }

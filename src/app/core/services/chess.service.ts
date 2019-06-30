@@ -4,7 +4,9 @@ import { ChessInstance, ShortMove, Square } from 'chess.js';
 import { IMoveEvent } from 'src/app/models/api/IMoveEvent';
 import { IBoardStatus } from "src/app/models/api/IBoardStatus";
 import { ChessFactoryService } from './chess-factory.service';
+import * as moment from 'moment';
 import { TimerService, ITimerOptions as ITimerInitOptions } from './timer.service';
+import { IMatch } from 'src/app/models/api/IMatch';
 
 export declare const Chess: {
     /**
@@ -22,15 +24,14 @@ export declare const Chess: {
 };
 export declare const ChessBoard: ChessBoardFactory;
 
-export const getOpositeTeam = (color: 'w' | 'b') => color === 'w' ? 'b' : 'w';
+export const getOpositePlayerColor = (color: 'w' | 'b') => color === 'w' ? 'b' : 'w';
 
 export interface IBoardInitOptions {
-	isTimeGame?: boolean;
 	elementId: string,
 	orientation: OrientationType,
 	fen?: string,
-	gameTime?: number,
-	moves?: IMoveEvent[],
+	match: IMatch;
+	moves: IMoveEvent[],
 	onDrop: (move: IMoveEvent) => void,
 	inCheck?: (status: IBoardStatus) => void,
 	inCheckmate?: (status: IBoardStatus) => void,
@@ -46,12 +47,12 @@ export interface IBoardInitOptions {
 	providedIn: 'root'
 })
 export class ChessService {
-	private isTimeGame: boolean;
 	private game: ChessInstance;
 	private board: ChessBoardInstance;
 	private options: IBoardInitOptions;
 	private moves: IMoveEvent[];
 	private defaultGameTime = 5 * 60;
+	private match: IMatch;
 
 	constructor(private chessFactory: ChessFactoryService,
 		private timerService: TimerService) {
@@ -60,9 +61,11 @@ export class ChessService {
 
 	init = (options: IBoardInitOptions) => {
 		this.options = options;
-		this.moves = options.moves || [];
-		this.game = new Chess(options.fen);
-		this.isTimeGame = options.isTimeGame || false;
+		this.match = options.match;
+		this.moves = (options.moves || []).sort((a, b) => {
+			return moment(a.serverTime).valueOf() - moment(b.serverTime).valueOf();
+		});
+
 		const cfg: BoardConfig = {
 			draggable: true,
 			position: options.fen || 'start',
@@ -71,14 +74,52 @@ export class ChessService {
 			onDrop: this.onDrop as any,
 			onSnapEnd: this.onSnapEnd as any,
 		};
-		this.board = ChessBoard(options.elementId, cfg);
 
-		if (this.isTimeGame) {
+		if (this.match.isTimeGame) {
 			const timerOptions: ITimerInitOptions = {
-				gameTime: options.gameTime || this.defaultGameTime,
+				gameTime: this.match.totalTime || this.defaultGameTime,
 				onTimeExpire: this.onTimerExpired
 			}
 			this.timerService.init(timerOptions);
+		}
+
+		this.game = new Chess(options.fen);
+		this.board = ChessBoard(options.elementId, cfg);
+
+		if (this.moves.length > 0) {
+			const lastMove = this.moves[this.moves.length - 1];
+			this.game.load(lastMove.newFENPos);
+			this.board.position(lastMove.newFENPos, false);
+
+			if (this.match.isTimeGame) {
+				// sync timer
+				const now = moment().utc();
+				const moveMadeAt = moment(lastMove.moveMadeAt).utc();
+				this.timerService.setTimer(lastMove.color, lastMove.time);
+				let elapsedTime = Math.round(moment.duration(now.diff(moveMadeAt)).asSeconds());
+				
+				const opositePlayerColor = getOpositePlayerColor(lastMove.color);
+				let opositePlayerTime = 0;
+				for (let i = this.moves.length - 1; i >= 0; i--) {
+					const currentMove = this.moves[i];
+					if (currentMove.color === opositePlayerColor) {
+						opositePlayerTime = currentMove.time;
+						elapsedTime += (this.match.totalTime - currentMove.time);
+						break;
+					}
+				}
+
+				if (this.match.isFinalized) {
+					opositePlayerTime = this.match.timeExpired ? 0 : opositePlayerTime;
+					this.timerService.setTimer(opositePlayerColor, opositePlayerTime);
+				} else if (elapsedTime >= this.match.totalTime) {
+					this.timerService.setTimer(opositePlayerColor, 0);
+					this.onTimerExpired(opositePlayerColor)
+				} else {
+					this.timerService.setTimer(opositePlayerColor, this.match.totalTime - elapsedTime);
+					this.timerService.startTimer(opositePlayerColor);
+				}
+			}
 		}
 
 		return this.board;
@@ -96,16 +137,27 @@ export class ChessService {
 		if (!validMove) {
 			return false;
 		}
-
-		if (this.isTimeGame) {
-			this.timerService.pauseTimer(moveEvent.color);
-			this.timerService.setTimer(moveEvent.color, moveEvent.time || 0);
-			this.timerService.startTimer(getOpositeTeam(moveEvent.color));
-		}
-
+		
 		this.moves.push(moveEvent);
 		this.board.position(this.board.move(moveStr));
 		const gameStatus = this.getBoardStatus();
+
+		if (!gameStatus.gameOver) {
+			this.match.isFinalized = true;
+			this.match.isLive = false;
+			this.match.winner = moveEvent.color;
+		}
+
+		if (this.match.isTimeGame) {
+			this.timerService.pauseTimer(moveEvent.color);
+			this.timerService.setTimer(moveEvent.color, moveEvent.time);
+			if (!gameStatus.gameOver) {
+				this.timerService.startTimer(getOpositePlayerColor(moveEvent.color));
+			}
+		}
+		
+		
+
 		this.onBoardStatusChange(gameStatus);
 		return true;
 	}
@@ -114,7 +166,7 @@ export class ChessService {
 	// only pick up pieces for the side to move
 	onDragStart = (source: string, piece: string, position: string, orientation: string) => {
 		const turn = this.game.turn();
-		return !this.game.game_over() && turn === orientation[0] && turn === piece[0];
+		return !this.game.game_over() && turn === orientation[0] && turn === piece[0] && !this.match.isFinalized;
 	};
 
 	getBoardStatus = (): IBoardStatus => {
@@ -134,13 +186,13 @@ export class ChessService {
 	}
 
 	getWhiteTimer = () => {
-		return this.isTimeGame
+		return this.match.isTimeGame
 			? this.timerService.getWhiteTimer()
 			: { seconds: -1 };
 	}
 
 	getBlackTimer = () => {
-		return this.isTimeGame
+		return this.match.isTimeGame
 			? this.timerService.getBlackTimer()
 			: { seconds: -1 };
 	}
@@ -159,6 +211,11 @@ export class ChessService {
 	}
 
 	onTimerExpired = (color: 'w' | 'b') => {
+		this.match.timeExpired = true;
+		this.match.isFinalized = true;
+		this.match.isLive = false;
+		this.match.winner = getOpositePlayerColor(color);
+
 		if (this.options.onTimerExpired) {
 			this.options.onTimerExpired(color);
 		}
@@ -174,17 +231,27 @@ export class ChessService {
 			return 'snapback';
 		}
 
-		if (this.isTimeGame) {
+		const gameStatus = this.getBoardStatus();
+		if (this.match.isTimeGame) {
 			this.timerService.pauseTimer(move.color);
-			this.timerService.startTimer(getOpositeTeam(move.color));
+			if (!gameStatus.gameOver) {
+				this.timerService.startTimer(getOpositePlayerColor(move.color));
+			}
 		}
 
-		const gameStatus = this.getBoardStatus();
-		this.onBoardStatusChange(gameStatus);
-		var seconds = this.isTimeGame ? this.timerService.getTimer(move.color) : undefined;
+		this.match.isFinalized = true;
+		this.match.isLive = false;
+		this.match.winner = move.color;
+
 		var newFENPos = this.game.fen();
+		var seconds = this.match.isTimeGame
+		? this.timerService.getTimer(move.color)
+		: undefined;
 		const moveEvent = this.chessFactory.createMoveEvent(move, gameStatus, oldFENPos, newFENPos, seconds);
+		this.moves.push(moveEvent);
+
 		this.options.onDrop(moveEvent);
+		this.onBoardStatusChange(gameStatus);
 	};
 
 	// update the board position after the piece snap
