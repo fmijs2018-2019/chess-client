@@ -12,15 +12,14 @@
 					(click)="onStartClick()">start</span>
 				<span class="move-element" *ngFor="let move of moves; let i = index"
 					[ngClass]="{'color': currentMoveIndex === i}" (click)="onMoveClick(i)">{{move.san}}
-					{{move.time}}</span>
+					{{getTimeStr(move.time)}}</span>
 			</div>
 			<div class="buttons-container">
 				<button class="btn btn-dark btn-lg" [ngClass]="{'disabled': isPrevDisabled}" (click)="onPrevClick()">
 					<fa-icon [icon]="faStepBackward"></fa-icon>
 					prev
 				</button>
-				<span class="middle-element" *ngIf="moves[currentMoveIndex]">{{moves[currentMoveIndex].time}}</span>
-				<span class="middle-element" *ngIf="currentMoveIndex === moves.length">{{match.winner === 'b' ? 'black won' : (match.winner === 'w' ? 'white won' : match.result)}}</span>
+				<span class="middle-element" *ngIf="currentMoveIndex === moves.length - 1">{{match.winner === 'b' ? 'black won' : (match.winner === 'w' ? 'white won' : match.result)}}</span>
 				<button class="btn btn-dark btn-lg" [ngClass]="{'disabled': isNextDisabled}" (click)="onNextClick()">
 					next
 					<fa-icon [icon]="faStepForward"></fa-icon>

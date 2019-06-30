@@ -15,7 +15,7 @@ const routes: Routes = [
 	{ path: routesConstants.lobby, component: LobbySceneComponent, canActivate: [AuthGuard] },
 	{ path: `${routesConstants.games}/:id`, component: GameSceneComponent, canActivate: [AuthGuard] },
 	{ path: routesConstants.callback, component: CallbackComponent },
-	{ path: routesConstants.userProfile, component: ProfileSceneComponent },
+	{ path: routesConstants.userProfile, component: ProfileSceneComponent, canActivate: [AuthGuard] },
 	{ path: routesConstants.matchesHistory, component: MatchesSceneComponent, canActivate: [AuthGuard] },
 	{ path: `${routesConstants.matchesHistory}/:id`, component: MatchSceneComponent, canActivate: [AuthGuard] },
 ];

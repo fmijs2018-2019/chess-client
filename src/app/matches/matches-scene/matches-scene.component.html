@@ -3,7 +3,7 @@
 </div>
 <div class="container">
 	<div class="row match-row" *ngFor="let match of matches$ | async" (click)="onMatchClick(match['_id'])">
-		<div class="col-3">
+		<div class="col-md-2">
 			<div>
 				<img src="assets/img/white.png" alt="image">
 				<span>{{match.whiteP === profile.sub ? profile.name : 'anonymous'}}</span>
@@ -13,23 +13,27 @@
 				<span>{{match.blackP === profile.sub ? profile.name : 'anonymous'}}</span>
 			</div>
 		</div>
-		<div class="col-5">
+		<div class="col-md-4">
 			<div>
 				<span class="label">Start: </span>
-				<span>{{match.startTime || '-'}}</span>
+				<span>{{match.startTime && getDateStr(match.startTime) || '-'}}</span>
 			</div>
 			<div>
 				<span class="label">End: </span>
-				<span>{{match.endTime || '-'}}</span>
+				<span>{{match.endTime && getDateStr(match.endTime) || '-'}}</span>
 			</div>
 		</div>
-		<div class="col-2">
+		<div class="col-md-2">
 			<div class="label">Total time</div>
-			<div>{{match.totalTime || '0'}} min</div>
+			<div>{{(match.totalTime && match.totalTime !== -1) ? getTimeStr(match.totalTime) : '00:00'}}</div>
 		</div>
-		<div class="col-2">
+		<div class="col-md-2">
 			<div class="label">Result</div>
-			<div *ngIf="match.result">{{match.result}}</div>
+			<div>{{matchResults[match.matchResult] || '-'}}</div>
+		</div>
+		<div class="col-md-2">
+			<div class="label">Winner</div>
+			<div *ngIf="!match.winner">-</div>
 			<img class="winner" *ngIf="match.winner === 'w'" src="assets/img/white.png" alt="image">
 			<img class="winner" *ngIf="match.winner === 'b'" src="assets/img/black.png" alt="image">
 		</div>

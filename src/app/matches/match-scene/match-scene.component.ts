@@ -7,6 +7,7 @@ import { IMoveEvent } from 'src/app/models/api/IMoveEvent';
 import { IMatch } from 'src/app/models/api/IMatch';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { faStepForward, faStepBackward } from '@fortawesome/free-solid-svg-icons';
+import { ChessUtils } from 'src/app/core/services/utils';
 
 declare const ChessBoard: ChessBoardFactory;
 
@@ -47,6 +48,7 @@ export class MatchSceneComponent implements OnInit, OnDestroy {
 					orientation: this.match.whiteP === this.authService.profilePaylaod.sub ? 'white' : 'black'
 				};
 				this.board = ChessBoard('board', cfg);
+				window.addEventListener('resize', this.board.resize);		
 			}));
 
 			this.subscription.add(this.chessApiService.getMoves(this.matchId).subscribe((moves) => {
@@ -98,5 +100,9 @@ export class MatchSceneComponent implements OnInit, OnDestroy {
 	setButtonsEnabling() {
 		this.isPrevDisabled = this.currentMoveIndex < 0;
 		this.isNextDisabled = this.currentMoveIndex >= this.moves.length - 1;
+	}
+
+	getTimeStr(time: number) {
+		return ChessUtils.getTimeStrFromSeconds(time);
 	}
 }
