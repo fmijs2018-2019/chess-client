@@ -11,6 +11,7 @@ import { LobbySceneModule } from './lobby-scene/lobby-scene.module';
 import { GameModule } from './game/game.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { MatchesModule } from './matches/matches.module';
+import { ProfileModule } from './profile/profile.module';
 
 @NgModule({
 	declarations: [
@@ -25,6 +26,7 @@ import { MatchesModule } from './matches/matches.module';
 		HomeModule,
 		LobbySceneModule,
 		GameModule,
+		ProfileModule,
 		MatchesModule,
 		BsDropdownModule.forRoot(),
 		ModalModule.forRoot()

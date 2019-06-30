@@ -11,11 +11,18 @@
 				<span class="move-element start-element" (click)="onStartClick()">Start</span>
 				<span class="move-element" *ngFor="let move of moves; let i = index"
 					[ngClass]="{'color': currentMoveIndex === i}"
-					(click)="onMoveClick(i)">{{move.from}}-{{move.to}}</span>
+					(click)="onMoveClick(i)">{{move.san}} {{move.time}}</span>
 			</div>
 			<div class="buttons-container">
-				<button class="btn btn-dark btn-md" [ngClass]="{'disabled': isPrevDisabled}" (click)="onPrevClick()">prev</button>
-				<button class="btn btn-dark btn-md" [ngClass]="{'disabled': isNextDisabled}" (click)="onNextClick()">next</button>
+				<button class="btn btn-dark btn-lg" [ngClass]="{'disabled': isPrevDisabled}" (click)="onPrevClick()">
+					<fa-icon [icon]="faStepBackward"></fa-icon>
+					prev
+				</button>
+				<span class="move-time">{{moves[currentMoveIndex] && moves[currentMoveIndex].time || ''}}</span>
+				<button class="btn btn-dark btn-lg" [ngClass]="{'disabled': isNextDisabled}" (click)="onNextClick()">
+					next
+					<fa-icon [icon]="faStepForward"></fa-icon>
+				</button>
 			</div>
 		</div>
 	</div>

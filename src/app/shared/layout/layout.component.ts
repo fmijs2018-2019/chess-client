@@ -17,7 +17,7 @@ export class LayoutComponent implements OnInit {
 	ngOnInit() {
 	}
 
-	openDropdown() {
+	toggleDropdown() {
 		if(this.dropdown) {
 			this.dropdown = undefined;
 		} else {

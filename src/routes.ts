@@ -3,4 +3,5 @@ export const routesConstants = {
 	lobby: 'lobby',
 	games: 'games',
 	matchesHistory: 'matches',
+	userProfile: 'profile',
 }

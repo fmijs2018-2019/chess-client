@@ -1,0 +1,35 @@
+.profile-page .row {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	font-family: arial;
+}
+
+.profile-page .title {
+	color: grey;
+	font-size: 18px;
+}
+
+.label {
+	font-weight: bold;
+}
+
+p {
+	display: flex;
+    justify-content: space-between;
+    margin: 5px 15px;
+}
+
+.row {
+	display: flex;
+	align-items: center;
+	text-align: center;
+}
+
+.profile-paic {
+	font-size: 150px;
+	margin: 15px;
+}
+
+.header-container {
+	text-align: center;
+	margin: 20px;
+}

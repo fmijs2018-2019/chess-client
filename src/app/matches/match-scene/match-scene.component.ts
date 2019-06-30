@@ -6,6 +6,7 @@ import { ChessApiService } from 'src/app/core/services/chess-api.service';
 import { IMoveEvent } from 'src/app/models/api/IMoveEvent';
 import { IMatch } from 'src/app/models/api/IMatch';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { faStepForward, faStepBackward } from '@fortawesome/free-solid-svg-icons';
 
 declare const ChessBoard: ChessBoardFactory;
 
@@ -15,6 +16,10 @@ declare const ChessBoard: ChessBoardFactory;
 	styleUrls: ['./match-scene.component.css']
 })
 export class MatchSceneComponent implements OnInit, OnDestroy {
+
+	public faStepForward = faStepForward;
+	public faStepBackward = faStepBackward;
+
 	board;
 	currentMoveIndex: number = -1;
 	matchId: string;
@@ -59,6 +64,8 @@ export class MatchSceneComponent implements OnInit, OnDestroy {
 	onMoveClick(index: number) {
 		this.currentMoveIndex = index;
 		this.board.position(this.moves[index].newFENPos);
+
+		this.setButtonsEnabling();
 	}
 
 	onPrevClick() {
@@ -70,8 +77,7 @@ export class MatchSceneComponent implements OnInit, OnDestroy {
 			this.board.position('start');
 		}
 		
-		this.isPrevDisabled = this.currentMoveIndex < 0;
-		this.isNextDisabled = this.currentMoveIndex >= this.moves.length - 1;
+		this.setButtonsEnabling();
 	}
 
 	onNextClick() {
@@ -80,13 +86,17 @@ export class MatchSceneComponent implements OnInit, OnDestroy {
 			this.board.position(this.moves[this.currentMoveIndex].newFENPos);
 		}
 
-		this.isPrevDisabled = this.currentMoveIndex < 0;
-		this.isNextDisabled = this.currentMoveIndex >= this.moves.length - 1;
+		this.setButtonsEnabling();
 	}
 
 	onStartClick() {
 		this.board.position('start');
 		this.currentMoveIndex = -1;
 		this.isPrevDisabled = true;
+	}
+
+	setButtonsEnabling() {
+		this.isPrevDisabled = this.currentMoveIndex < 0;
+		this.isNextDisabled = this.currentMoveIndex >= this.moves.length - 1;
 	}
 }
