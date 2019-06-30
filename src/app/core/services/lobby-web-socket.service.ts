@@ -3,9 +3,6 @@ import * as io from 'socket.io-client';
 import { IChallenge } from 'src/app/models/IChallenge';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { Observable, Subject, from } from 'rxjs';
-import { ILobbyEvent } from 'src/app/models/events/ILobbyEvent';
-import { scan, map, filter } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 export enum LobbyEvents {

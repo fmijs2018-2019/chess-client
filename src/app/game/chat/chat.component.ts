@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IMessage } from 'src/app/models/api/IMessage';
+import { IMessageEvent } from 'src/app/models/api/IMessageEvent';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
