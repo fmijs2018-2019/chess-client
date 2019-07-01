@@ -1,0 +1,21 @@
+<div class="header-container">
+	<h1>Challenges</h1>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-6">
+			<button [disabled]="myChallenge" class="btn btn-dark btn-md btn-block" (click)="openModal()">CREATE A
+				CHALLENGE</button>
+		</div>
+		<div class="col-6">
+			<button class="btn btn-dark btn-md btn-block">PLAY WITH MACHINE</button>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<app-challenges-list (onRowClick)="clickRow($event)" [myChallenge]="myChallenge" [challenges]="challenges">
+			</app-challenges-list>
+		</div>
+	</div>
+</div>

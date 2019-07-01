@@ -1,0 +1,29 @@
+<div class="header-container">
+	<h1>Standart game</h1>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-4 col-md-3">
+			<div class="clock-container">
+				<img *ngIf="orientation" [src]="'assets/img/' + orientation + '.png'" alt="image">
+				<span>
+					{{myTimer ? getTimeStrFromSeconds(myTimer.seconds) : '-'}}
+				</span>
+			</div>
+			<app-status-card [boardStatus]="boardStatus" [moves]="moves" [orientation]="orientation" [match]="match" [opponentOrientation]="opponentOrientation"></app-status-card>
+			<app-moves-history-card [moves]="moves"></app-moves-history-card>
+		</div>
+		<div class="col-sm-4 col-md-6">
+			<div id="board"></div>
+		</div>
+		<div class="col-sm-4 col-md-3">
+			<div class="clock-container">
+				<img *ngIf="opponentOrientation" [src]="'assets/img/' + opponentOrientation + '.png'" alt="image">
+				<span>
+					{{opponentTimer ? getTimeStrFromSeconds(opponentTimer.seconds) : '-'}}
+				</span>
+			</div>
+			<app-chat [moves]="moves" [messages]="messages" (sendMessage)="sendMessage($event)"></app-chat>
+		</div>
+	</div>
+</div>

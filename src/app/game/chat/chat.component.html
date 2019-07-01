@@ -1,0 +1,13 @@
+<div class="messages-container">
+	<div *ngFor="let message of messages" class="message" [ngClass]="{'my-message': checkIfMyMessage(message.sender)}">
+		<span>{{message.message}}</span>
+	</div>
+</div>
+<div class="input-group mb-3">
+	<input (keydown.enter)="clickSend()" [(ngModel)]="text" type="text" class="form-control" placeholder="Write message..." aria-describedby="message-input">
+	<div class="input-group-append">
+		<span class="input-group-text" id="message-input">
+			<img src="assets/img/send.png" alt="image" (click)="clickSend()">
+		</span>
+	</div>
+</div>

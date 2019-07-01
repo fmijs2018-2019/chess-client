@@ -1,16 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
+import { faChess } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
-  selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css']
+	selector: 'app-layout',
+	templateUrl: './layout.component.html',
+	styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent implements OnInit {
 
-  constructor(private auth: AuthService) { }
+	faChess = faChess;
+	dropdown: string;
 
-  ngOnInit() {
-  }
+	constructor(public auth: AuthService) { }
+
+	ngOnInit() {
+	}
+
+	toggleDropdown() {
+		if(this.dropdown) {
+			this.dropdown = undefined;
+		} else {
+			this.dropdown = 'show';
+		}
+	}
 
 }

@@ -1,0 +1,49 @@
+<div class="list-container">
+	<table class="fixed-header">
+		<thead>
+			<tr class="header">
+				<th>Orientation</th>
+				<th>Opponent</th>
+				<th>Game variation</th>
+				<th>Time</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="my-challenge" *ngIf="myChallenge" (click)="clickRow(myChallenge.id)">
+				<td>
+					<img *ngIf="myChallenge.pieces === 'white'" src="assets/img/white.png" alt="image">
+					<img *ngIf="myChallenge.pieces === 'black'" src="assets/img/black.png" alt="image">
+				</td>
+				<td>Anonymous</td>
+				<td>Standart</td>
+				<td *ngIf="myChallenge.time; else noTimeSet">{{getTimeStrFromSeconds(myChallenge.time)}}</td>
+				<ng-template #noTimeSet>
+					<td>-</td>
+				</ng-template>
+				<td class="icon-color">
+					<button class="icon-color">
+						<fa-icon [icon]="faTimes" size="sm"></fa-icon>
+					</button>
+				</td>
+			</tr>
+			<tr *ngFor="let challenge of challenges" (click)="clickRow(challenge.id)">
+				<td>
+					<img *ngIf="challenge.pieces === 'white'" src="assets/img/black.png" alt="image">
+					<img *ngIf="challenge.pieces === 'black'" src="assets/img/white.png" alt="image">
+				</td>
+				<td>Anonymous</td>
+				<td>Standart</td>
+				<td *ngIf="challenge.time; else noTimeSet">{{challenge.time}}</td>
+				<ng-template #noTimeSet>
+					<td>-</td>
+				</ng-template>
+				<td class="icon-color">
+					<button class="icon-color">
+						<fa-icon [icon]="faSignInAlt" size="sm"></fa-icon>
+					</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

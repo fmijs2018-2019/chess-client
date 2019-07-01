@@ -1,0 +1,41 @@
+img {
+	width: 25px;
+}
+
+span {
+	vertical-align: bottom;
+}
+
+.game-time {
+	color: grey;
+	font-style: italic;
+	font-size: 17px;
+}
+
+.game-type {
+	font-size: 22px;
+}
+
+.player-status {
+	display: flex;
+	align-items: center;
+	/* justify-content: space-evenly; */
+}
+
+.name-element {
+	overflow: hidden;
+    text-overflow: ellipsis;
+	white-space: nowrap;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+.connectivity {
+	width: 10px;
+	min-width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: green;
+	display: inline-block;
+	margin-bottom: -2px;
+}

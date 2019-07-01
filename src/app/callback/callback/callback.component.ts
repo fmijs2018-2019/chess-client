@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
-import { routes } from 'src/routes';
+import { routesConstants } from 'src/routes';
 
 @Component({
 	selector: 'app-callback',
@@ -15,7 +15,7 @@ export class CallbackComponent implements OnInit {
 	async ngOnInit() {
 		try {
 			await this.authService.handleAuthentication();
-			await this.router.navigateByUrl(routes.rooms);
+			await this.router.navigateByUrl(routesConstants.lobby);
 		} catch (err) {
 			// TODO: handle err
 		}

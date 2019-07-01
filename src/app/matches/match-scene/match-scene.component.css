@@ -1,0 +1,52 @@
+.header-container {
+	text-align: center;
+}
+
+#board {
+	max-width: 550px;
+	width: 100%;
+	margin: auto;
+}
+
+.moves-container {
+	border: solid 1px lightgray;
+    margin-bottom: 10px;
+    padding: 10px;
+    height: 480px;
+	overflow: scroll;
+	text-align: center;
+}
+
+.move-element {
+	display: inline-block;
+    padding: 2px 5px;
+    border: solid 1px grey;
+	margin: 5px;
+	min-width: 100px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.move-element:hover, .color {
+	background-color: #343a40;
+	color: white;
+}
+
+.buttons-container {
+	display: flex;
+	justify-content: space-between;
+}
+
+button {
+	justify-content: center;
+}
+
+.middle-element {
+	font-size: 1.5em;
+}
+
+h1 {
+	font-weight: lighter;
+	font-size: 2em;
+	padding: 10px;
+}

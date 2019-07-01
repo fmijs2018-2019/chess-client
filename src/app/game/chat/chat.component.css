@@ -1,0 +1,26 @@
+.messages-container {
+	border: solid 1px lightgray;
+    margin-bottom: 10px;
+    padding: 10px;
+    overflow-y: auto;
+    height: 400px;
+}
+
+img {
+	width: 25px;
+}
+
+button {
+	border: none;
+	background: none;
+}
+
+.message {
+	word-wrap: break-word;
+	color: aqua;
+}
+
+.my-message {
+	text-align: right;
+	color: blue;
+}
